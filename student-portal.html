@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Learning Portal &amp; Virtual Classroom | Khoula Islamic Institute</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: #f1f5f4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .portal-topbar {
+      background: var(--color-primary-dark);
+      color: #fff;
+      padding: 0.85rem 1.5rem;
+      border-bottom: 2px solid var(--color-gold-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .portal-user-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .portal-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--color-gold);
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .portal-container {
+      max-width: 1280px;
+      margin: 1.8rem auto;
+      padding: 0 1.25rem;
+      width: 100%;
+      flex-grow: 1;
+    }
+    .portal-tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 1.8rem;
+    }
+    .portal-tab-btn {
+      padding: 0.75rem 1.4rem;
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #64748b;
+      cursor: pointer;
+      position: relative;
+      transition: all var(--transition-fast);
+    }
+    .portal-tab-btn.active {
+      color: var(--color-primary);
+    }
+    .portal-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-gold);
+      border-radius: 2px;
+    }
+    .classroom-hero-card {
+      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: 2.2rem;
+      border: 1.5px solid var(--color-gold-border);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .lesson-viewer-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .makharij-card {
+      background: var(--color-gold-pale);
+      border: 1px solid var(--color-gold-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .arabic-ayah-box {
+      font-family: var(--font-arabic);
+      font-size: 2rem;
+      line-height: 2.2;
+      color: var(--color-primary-dark);
+      background: #fdfcf9;
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid #e8e4dc;
+      text-align: right;
+      direction: rtl;
+      margin: 1.2rem 0;
+    }
+    .tajweed-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. PORTAL TOP UTILITY BAR
+       ========================================================================= -->
+  <header class="portal-topbar">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 0.75rem; color: #fff; text-decoration: none;">
+        <div class="brand-logo-badge" style="width: 38px; height: 38px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+          <img src="logo.png" alt="Khoula Logo" onerror="this.src='logo.jpg'" style="height: 30px; width: auto; object-fit: contain;">
+        </div>
+        <strong style="font-family: var(--font-heading); font-size: 1.1rem;">Khoula LMS Portal</strong>
+      </a>
+      <span class="badge-gold" style="font-size: 0.72rem; padding: 0.2rem 0.6rem;">Virtual Academy 2.0</span>
+    </div>
+
+    <!-- Active Student Profile Switcher -->
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.08); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); border: 1px solid rgba(197,155,39,0.3);">
+        <i class="fas fa-user-circle" style="color: var(--color-gold);"></i>
+        <span style="font-size: 0.82rem; color: #d1dedb;">Student Profile:</span>
+        <select id="studentProfileSelect" onchange="switchStudentProfile(this.value)" style="background: none; border: none; color: #fff; font-weight: 700; font-size: 0.85rem; cursor: pointer; outline: none;">
+          <option value="zayd" style="background: var(--color-primary-dark); color: #fff;">Zayd Khan (Nazra &amp; Tajweed)</option>
+          <option value="amina" style="background: var(--color-primary-dark); color: #fff;">Amina Farooq (Hifz Program)</option>
+          <option value="tariq" style="background: var(--color-primary-dark); color: #fff;">Dr. Tariq (Adult Arabic)</option>
+        </select>
+      </div>
+
+      <div class="portal-user-badge">
+        <div class="portal-avatar" id="portalAvatar">Z</div>
+        <div>
+          <strong style="font-size: 0.92rem; display: block;" id="portalStudentName">Zayd Khan</strong>
+          <span style="font-size: 0.75rem; color: var(--color-gold-light);" id="portalStudentRole">Active Enrolled Student</span>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn btn-outline-white btn-sm" title="Return to Main Academy Website">
+        <i class="fas fa-home"></i> Home
+      </a>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. MAIN LMS CONTAINER
+       ========================================================================= -->
+  <div class="portal-container">
+    
+    <!-- LIVE CLASSROOM LAUNCH CARD -->
+    <div class="classroom-hero-card">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+          <span style="display: inline-block; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e;"></span>
+          <span style="color: #86efac; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Live 1-on-1 Session Ready</span>
+        </div>
+        <h2 style="font-family: var(--font-heading); font-size: 1.85rem; color: #fff; margin-bottom: 0.4rem;" id="heroClassTitle">
+          Quran Nazra with Tajweed - 1-on-1 Live Class
+        </h2>
+        <p style="color: #cbdad6; font-size: 0.95rem;">
+          Assigned Tutor: <strong style="color: var(--color-gold-light);" id="heroTeacherName">Qari Abdul Rehman Al-Azhari</strong> | Today's Time: <strong style="color: #fff;">6:00 PM PKT / 1:00 PM GMT</strong>
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button class="btn btn-gold" onclick="launchVirtualClassroom()">
+          <i class="fas fa-video"></i> Launch Zoom Classroom
+        </button>
+        <button class="btn btn-outline-white" onclick="alert('Testing microphone & speaker: Audio connection verified!')">
+          <i class="fas fa-headset"></i> Test Audio
+        </button>
+      </div>
+    </div>
+
+    <!-- DAILY QURAN PROGRESS TRACKER CARD (Sabaq, Sabqi, Manzil) -->
+    <div class="quran-tracker-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+        <div>
+          <span class="section-tag" style="margin-bottom: 0.2rem; font-size: 0.78rem;">Verified Academic Ledger</span>
+          <h3 style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--color-primary-dark);">
+            Daily Quran Learning Log (Sabaq / Sabqi / Manzil)
+          </h3>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Attendance Punctuality:</span>
+          <span class="badge-teal" style="font-size: 0.85rem; font-weight: 700;">100% (18/18 Sessions)</span>
+        </div>
+      </div>
+
+      <div class="tracker-grid">
+        <!-- Box 1: Sabaq -->
+        <div class="tracker-box sabaq">
+          <div class="tracker-label"><i class="fas fa-star" style="color:var(--color-gold);"></i> Today's Sabaq (New Lesson)</div>
+          <div class="tracker-value" id="trackerSabaqText">Surah Al-Baqarah (Ayahs 1-10)</div>
+          <div class="tracker-sub">
+            Evaluation: <strong style="color: #15803d;">Mumtaz / Excellent (A+)</strong><br>
+            <em>Remark: "Accurate throat Makharij on Ayn and Haa."</em>
+          </div>
+        </div>
+
+        <!-- Box 2: Sabqi -->
+        <div class="tracker-box sabqi">
+          <div class="tracker-label"><i class="fas fa-history" style="color:var(--color-info);"></i> Sabqi (Recent Revision)</div>
+          <div class="tracker-value" id="trackerSabqiText">Surah Al-Fatiha + Juz 1 Page 1</div>
+          <div class="tracker-sub">
+            Evaluation: <strong style="color: #0369a1;">Jayyid Jiddan / Very Good (A)</strong><br>
+            <em>Remark: "Fluent recitation without hesitations."</em>
+          </div>
+        </div>
+
+        <!-- Box 3: Manzil / Muraja'ah -->
+        <div class="tracker-box manzil">
+          <div class="tracker-label"><i class="fas fa-book-reader" style="color:var(--color-success);"></i> Manzil (Cumulative Retention)</div>
+          <div class="tracker-value" id="trackerManzilText">Juz 30 (Amma - 37 Surahs)</div>
+          <div class="tracker-sub">
+            Evaluation: <strong style="color: #15803d;">Passed Monthly Mutoon</strong><br>
+            <em>Remark: "Retention rate stands at 98.4%."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PORTAL NAVIGATION TABS -->
+    <div class="portal-tabs-nav">
+      <button class="portal-tab-btn active" id="btnTabClassroom" onclick="switchPortalTab('classroom')">
+        <i class="fas fa-laptop-code"></i> Course Lessons &amp; Interactive Reader
+      </button>
+      <button class="portal-tab-btn" id="btnTabCurriculum" onclick="switchPortalTab('curriculum')">
+        <i class="fas fa-list-ol"></i> Full Syllabus &amp; Milestones
+      </button>
+      <button class="portal-tab-btn" id="btnTabCertificates" onclick="switchPortalTab('certificates')">
+        <i class="fas fa-award"></i> My Certificates
+      </button>
+    </div>
+
+    <!-- TAB CONTENT 1: INTERACTIVE LESSONS & READER -->
+    <div id="portalContentClassroom">
+      <div style="display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start;">
+        
+        <!-- Sidebar: Lesson Progression Tree -->
+        <div style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-light); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 0.3rem;">
+              <span>Course Progress</span>
+              <span id="courseProgressPercent">60% Completed</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="courseProgressBar" style="width: 60%;"></div>
+            </div>
+          </div>
+
+          <h4 style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--color-primary-dark); margin-bottom: 0.8rem;">
+            Course Modules &amp; Lessons
+          </h4>
+
+          <ul class="lesson-tree" id="lessonsTreeList">
+            <li class="lesson-item completed" onclick="loadLesson(1)">
+              <i class="fas fa-check-circle lesson-item-check"></i>
+              <span>Lesson 1: Makharij of Throat Letters</span>
+            </li>
+            <li class="lesson-item completed" onclick="loadLesson(2)">
+              <i class="fas fa-check-circle lesson-item-check"></i>
+              <span>Lesson 2: Rules of Noon Saakin - Izhar</span>
+            </li>
+            <li class="lesson-item completed" onclick="loadLesson(3)">
+              <i class="fas fa-check-circle lesson-item-check"></i>
+              <span>Lesson 3: Rules of Noon Saakin - Idgham</span>
+            </li>
+            <li class="lesson-item active" onclick="loadLesson(4)">
+              <i class="fas fa-play-circle" style="color: var(--color-gold);"></i>
+              <span>Lesson 4: Rules of Noon Saakin - Iqlab</span>
+            </li>
+            <li class="lesson-item" onclick="loadLesson(5)">
+              <i class="fas fa-lock" style="color: #94a3b8; font-size: 0.8rem;"></i>
+              <span>Lesson 5: Rules of Noon Saakin - Ikhfa</span>
+            </li>
+            <li class="lesson-item" onclick="loadLesson(6)">
+              <i class="fas fa-lock" style="color: #94a3b8; font-size: 0.8rem;"></i>
+              <span>Lesson 6: Ahkam-e-Meem Saakin</span>
+            </li>
+            <li class="lesson-item" onclick="loadLesson(7)">
+              <i class="fas fa-lock" style="color: #94a3b8; font-size: 0.8rem;"></i>
+              <span>Lesson 7: Qalqalah &amp; Ghunnah Mastery</span>
+            </li>
+            <li class="lesson-item" onclick="loadLesson(8)">
+              <i class="fas fa-lock" style="color: #94a3b8; font-size: 0.8rem;"></i>
+              <span>Lesson 8: Rules of Madd (Asli &amp; Far'i)</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Main Workspace: Active Lesson Content & Interactive Audio Quran Reader -->
+        <div class="lesson-viewer-card" id="lessonViewer">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; margin-bottom: 1.25rem;">
+            <div>
+              <span class="badge-gold" style="font-size: 0.75rem;">Module 2 • Tajweed Ahkam</span>
+              <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-primary-dark); margin-top: 0.3rem;" id="activeLessonTitle">
+                Lesson 4: Ahkam-e-Noon Saakin &amp; Tanween - Iqlab (الإقلاب)
+              </h3>
+            </div>
+            <button class="btn btn-gold btn-sm" onclick="completeCurrentLesson()">
+              <i class="fas fa-check"></i> Mark Complete &amp; Next
+            </button>
+          </div>
+
+          <!-- Lesson Instructions -->
+          <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;" id="activeLessonDesc">
+            <strong>Definition:</strong> <em>Iqlab</em> literally means to convert or transform. In Tajweed, when a Noon Saakin (نْ) or Tanween (ً ٍ ٌ) is followed immediately by the letter <strong>Baa (ب)</strong>, the sound of Noon is converted into a concealed <strong>Meem (م)</strong> with Ghunnah (nasalization for 2 beats).
+          </p>
+
+          <!-- Interactive Ayah Display with Tajweed Highlights -->
+          <div class="arabic-ayah-box">
+            كَلَّا ۖ لَيُنبَذَنَّ فِي الْحُطَمَةِ • مِن بَعْدِ مَآ أَرَىٰكَ • عَلِيمٌ بِذَاتِ الصُّدُورِ
+          </div>
+
+          <!-- Audio Recitation Player for this Lesson -->
+          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: var(--radius-md); padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <button class="play-recitation-btn" id="lessonPlayAudioBtn" onclick="toggleLessonRecitationAudio()">
+                <i class="fas fa-play" id="lessonAudioIcon"></i>
+              </button>
+              <div>
+                <strong style="color: var(--color-primary-dark); font-size: 0.95rem; display: block;">
+                  Audio Recitation with Precise Tajweed (Qari Alafasy)
+                </strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Listen to the 2-beat concealed Meem sound</span>
+              </div>
+            </div>
+            <button class="btn btn-outline-gold btn-sm" onclick="repeatVersePractice()">
+              <i class="fas fa-redo"></i> Repeat 3 Times
+            </button>
+          </div>
+
+          <!-- Makharij & Articulation Tip -->
+          <div class="makharij-card">
+            <h4 style="font-family: var(--font-heading); color: #856404; font-size: 1rem; margin-bottom: 0.4rem;">
+              <i class="fas fa-lightbulb"></i> Articulation &amp; Pronunciation Tip
+            </h4>
+            <p style="font-size: 0.88rem; color: #6d520a; line-height: 1.6;">
+              When pronouncing Iqlab, gently bring your lips together without pressing them excessively tight, allowing the sound to resonate smoothly through the nasal cavity (Khayshoom).
+            </p>
+          </div>
+
+          <!-- Color Coding Legend -->
+          <div class="tajweed-legend">
+            <div class="legend-item">
+              <span class="legend-dot" style="background: #2563eb;"></span>
+              <span>Iqlab (Concealed Meem)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background: #16a34a;"></span>
+              <span>Ikhfa (Nasal Whispering)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background: #dc2626;"></span>
+              <span>Madd (Obligatory Lengthening 4-6 beats)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background: #ea580c;"></span>
+              <span>Qalqalah (Echoing / Bouncing Sound)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT 2: FULL SYLLABUS -->
+    <div id="portalContentCurriculum" style="display: none;">
+      <div class="lesson-viewer-card">
+        <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-primary-dark); margin-bottom: 1rem;">
+          Quran Nazra &amp; Tajweed Comprehensive Syllabus
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">
+          Designed to take students from elementary phonetics to independent, fluent recitation of the 30 Juz with Sanad-level accuracy.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+          <div style="background: #f8fafc; padding: 1.5rem; border-radius: var(--radius-md); border-top: 4px solid var(--color-gold);">
+            <h4 style="font-family: var(--font-heading); color: var(--color-primary-dark); margin-bottom: 0.6rem;">Part 1: Foundational Makharij</h4>
+            <ul style="font-size: 0.88rem; color: #475569; display: flex; flex-direction: column; gap: 0.5rem; padding-left: 1.2rem;">
+              <li>Throat Letters (Halqiyyah: ء هـ ع ح غ خ)</li>
+              <li>Tongue &amp; Palate (Lahwiyyah &amp; Shajariyyah)</li>
+              <li>Dental &amp; Whispering Letters (Lisaniyyah)</li>
+              <li>Lip &amp; Nasal Letters (Shafawiyyah &amp; Khayshoom)</li>
+            </ul>
+          </div>
+
+          <div style="background: #f8fafc; padding: 1.5rem; border-radius: var(--radius-md); border-top: 4px solid var(--color-primary);">
+            <h4 style="font-family: var(--font-heading); color: var(--color-primary-dark); margin-bottom: 0.6rem;">Part 2: Essential Ahkam</h4>
+            <ul style="font-size: 0.88rem; color: #475569; display: flex; flex-direction: column; gap: 0.5rem; padding-left: 1.2rem;">
+              <li>Rules of Noon Saakin &amp; Tanween (Izhar, Idgham, Iqlab, Ikhfa)</li>
+              <li>Rules of Meem Saakin (Izhar, Idgham, Ikhfa Shafawi)</li>
+              <li>The 5 Qalqalah Letters (ق ط ب ج د)</li>
+              <li>Thickness &amp; Thinness of Raa &amp; Laam (Tafkheem &amp; Tarqeeq)</li>
+            </ul>
+          </div>
+
+          <div style="background: #f8fafc; padding: 1.5rem; border-radius: var(--radius-md); border-top: 4px solid var(--color-success);">
+            <h4 style="font-family: var(--font-heading); color: var(--color-primary-dark); margin-bottom: 0.6rem;">Part 3: Fluency &amp; Stopping</h4>
+            <ul style="font-size: 0.88rem; color: #475569; display: flex; flex-direction: column; gap: 0.5rem; padding-left: 1.2rem;">
+              <li>Rules of Madd (Madd Munfasil, Muttasil, Lazim)</li>
+              <li>Waqf (Stopping Marks: م, ط, ج, ز, ص, لا)</li>
+              <li>Saktah (Brief silence without taking breath)</li>
+              <li>Full Nazra of Juz 1 to Juz 30</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT 3: CERTIFICATES -->
+    <div id="portalContentCertificates" style="display: none;">
+      <div class="certificate-frame">
+        <div class="certificate-seal" style="background: #ffffff; border: 2px solid var(--color-gold); overflow: hidden;">
+          <img src="images/logo-mark.png" alt="Institute Seal" style="height: 58px; width: auto; object-fit: contain;">
+        </div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); letter-spacing: 2px; text-transform: uppercase;">
+          Khoula Islamic Institute of Quranic Studies
+        </div>
+        <h2 class="certificate-title">Certificate of Quranic Excellence</h2>
+        <p style="font-size: 1rem; color: var(--text-muted); margin: 0.5rem 0;">This is to certify that</p>
+        
+        <div class="certificate-recipient" id="certStudentName">Zayd Khan</div>
+
+        <p style="font-size: 1.05rem; color: var(--text-main); max-width: 580px; margin: 0.5rem auto 1.5rem auto; line-height: 1.7;">
+          has successfully demonstrated proficiency in the recitation of the Holy Quran according to the rules of <strong>Tajweed al-Quran (Hafs 'an Asim)</strong> with outstanding Makharij accuracy and devotion.
+        </p>
+
+        <div style="display: flex; justify-content: space-around; margin-top: 2.5rem; border-top: 1px dashed var(--color-gold); padding-top: 1.5rem;">
+          <div style="text-align: center;">
+            <strong style="display: block; font-family: var(--font-arabic); font-size: 1.2rem; color: var(--color-primary);">القارئ عبد الرحمن</strong>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Senior Tajweed Master</span>
+          </div>
+          <div style="text-align: center;">
+            <strong style="display: block; font-family: var(--font-arabic); font-size: 1.2rem; color: var(--color-primary);">إدارة المعهد</strong>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Principal / Academic Dean</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <button class="btn btn-gold btn-sm" onclick="window.print()">
+            <i class="fas fa-print"></i> Print Official Certificate
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const STUDENT_PROFILES = {
+      zayd: {
+        name: 'Zayd Khan',
+        role: 'Active Enrolled Student',
+        course: 'Quran Reading & Nazra with Tajweed',
+        teacher: 'Qari Abdul Rehman Al-Azhari',
+        progress: 60,
+        sabaq: 'Surah Al-Baqarah (Ayahs 1-10)',
+        sabqi: 'Surah Al-Fatiha + Juz 1 Page 1',
+        manzil: 'Juz 30 (Amma - 37 Surahs)'
+      },
+      amina: {
+        name: 'Amina Farooq',
+        role: 'Hifz Memorization Student',
+        course: 'Tahfeez-ul-Quran (Full Hifz)',
+        teacher: 'Ustadha Fatima Zahra',
+        progress: 85,
+        sabaq: 'Surah Al-Kahf (Ayahs 1-20)',
+        sabqi: 'Surah Maryam (Full)',
+        manzil: 'Juz 1 to Juz 5 (Mutoon Checked)'
+      },
+      tariq: {
+        name: 'Dr. Tariq Mehmood',
+        role: 'Adult Classical Arabic Student',
+        course: 'Quranic Arabic & Tafseer',
+        teacher: 'Mufti Muhammad Zeeshan',
+        progress: 45,
+        sabaq: 'Surah Ali \'Imran (Ayahs 190-195)',
+        sabqi: 'Surah Al-Baqarah (Ruku 40)',
+        manzil: 'Grammatical Sarf & Nahw Tables'
+      }
+    };
+
+    let activeProfileKey = 'zayd';
+    let currentLessonAudio = null;
+
+    function switchStudentProfile(key) {
+      activeProfileKey = key;
+      const data = STUDENT_PROFILES[key];
+      if (!data) return;
+
+      document.getElementById('portalStudentName').textContent = data.name;
+      document.getElementById('portalAvatar').textContent = data.name[0];
+      document.getElementById('portalStudentRole').textContent = data.role;
+      document.getElementById('heroClassTitle').textContent = `${data.course} - 1-on-1 Live Class`;
+      document.getElementById('heroTeacherName').textContent = data.teacher;
+
+      document.getElementById('trackerSabaqText').textContent = data.sabaq;
+      document.getElementById('trackerSabqiText').textContent = data.sabqi;
+      document.getElementById('trackerManzilText').textContent = data.manzil;
+
+      document.getElementById('courseProgressPercent').textContent = `${data.progress}% Completed`;
+      document.getElementById('courseProgressBar').style.width = `${data.progress}%`;
+
+      document.getElementById('certStudentName').textContent = data.name;
+      showToast(`Switched student profile to ${data.name}`);
+    }
+
+    function switchPortalTab(tabName) {
+      document.getElementById('btnTabClassroom').className = tabName === 'classroom' ? 'portal-tab-btn active' : 'portal-tab-btn';
+      document.getElementById('btnTabCurriculum').className = tabName === 'curriculum' ? 'portal-tab-btn active' : 'portal-tab-btn';
+      document.getElementById('btnTabCertificates').className = tabName === 'certificates' ? 'portal-tab-btn active' : 'portal-tab-btn';
+
+      document.getElementById('portalContentClassroom').style.display = tabName === 'classroom' ? 'block' : 'none';
+      document.getElementById('portalContentCurriculum').style.display = tabName === 'curriculum' ? 'block' : 'none';
+      document.getElementById('portalContentCertificates').style.display = tabName === 'certificates' ? 'block' : 'none';
+    }
+
+    function launchVirtualClassroom() {
+      const zoomModal = `
+        <div class="modal-header" style="background:#2d8cff;">
+          <h3 class="modal-title"><i class="fas fa-video"></i> Joining 1-on-1 Live Classroom</h3>
+          <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="text-align:center;">
+          <div style="font-size:3rem; color:#2d8cff; margin-bottom:1rem;">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); margin-bottom:0.5rem;">
+            Session with ${STUDENT_PROFILES[activeProfileKey].teacher}
+          </h3>
+          <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;">
+            Your secure encrypted 1-on-1 video room is launching with interactive digital Quran screen sharing and Tajweed highlighting.
+          </p>
+          <div style="background:#f0f9ff; padding:1.2rem; border-radius:var(--radius-md); border:1px solid #bae6fd; margin-bottom:1.5rem; text-align:left; font-size:0.88rem;">
+            <strong>Class Protocol:</strong><br>
+            • Please ensure your microphone is enabled.<br>
+            • Keep your physical Mushaf or Qaida open on your desk.<br>
+            • Sincerity of intention (Ikhlas) for sacred learning.
+          </div>
+          <div style="display:flex; justify-content:center; gap:1rem;">
+            <button class="btn btn-primary" onclick="alert('Opening Virtual Classroom Room ID: KH-9921...'); closeModal();">
+              <i class="fas fa-external-link-alt"></i> Connect Live Now
+            </button>
+            <button class="btn btn-outline-gold" onclick="closeModal()">Close</button>
+          </div>
+        </div>
+      `;
+      showModal(zoomModal);
+    }
+
+    function toggleLessonRecitationAudio() {
+      const icon = document.getElementById('lessonAudioIcon');
+      if (currentLessonAudio && !currentLessonAudio.paused) {
+        currentLessonAudio.pause();
+        icon.className = 'fas fa-play';
+        return;
+      }
+
+      currentLessonAudio = new Audio('https://everyayah.com/data/Alafasy_128kbps/104004.mp3');
+      icon.className = 'fas fa-spinner fa-spin';
+      currentLessonAudio.play().then(() => {
+        icon.className = 'fas fa-pause';
+      }).catch(() => {
+        icon.className = 'fas fa-play';
+        showToast('Playing sample lesson audio demonstration...');
+        simulateWebAudioRecitation();
+      });
+
+      currentLessonAudio.onended = () => {
+        icon.className = 'fas fa-play';
+      };
+    }
+
+    function repeatVersePractice() {
+      showToast('Repeating verse 3 times for memorization practice...');
+      toggleLessonRecitationAudio();
+    }
+
+    function completeCurrentLesson() {
+      const bar = document.getElementById('courseProgressBar');
+      const label = document.getElementById('courseProgressPercent');
+      let currentVal = parseInt(bar.style.width) || 60;
+      if (currentVal < 100) {
+        currentVal += 15;
+        if (currentVal > 100) currentVal = 100;
+        bar.style.width = `${currentVal}%`;
+        label.textContent = `${currentVal}% Completed`;
+        showToast(`MashaAllah! Lesson marked complete. Progress updated to ${currentVal}%!`);
+      } else {
+        showToast('MashaAllah! You have completed 100% of this course.');
+      }
+    }
+
+    function loadLesson(num) {
+      showToast(`Loaded Lesson ${num}.`);
+    }
+  </script>
+</body>
+</html>
