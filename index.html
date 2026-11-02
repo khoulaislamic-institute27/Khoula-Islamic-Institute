@@ -19,9 +19,10 @@
   <!-- Master Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ===== LANGUAGE SWITCHER STYLES ===== -->
+  <!-- ===== LANGUAGE SWITCHER + DARK MODE STYLES ===== -->
   <style>
-    /* Language Toggle Button */
+
+    /* ── Language Toggle ───────────────────────────────── */
     .lang-switcher-wrap {
       display: flex;
       align-items: center;
@@ -50,26 +51,124 @@
     }
     .lang-btn:hover:not(.active) { color: #fff; }
 
-    /* RTL / Urdu Mode Overrides */
+    /* ── Day / Night Toggle Button ─────────────────────── */
+    .theme-toggle-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      cursor: pointer;
+      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ccc;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .theme-toggle-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .theme-toggle-btn .theme-icon { font-size: 0.9rem; transition: transform 0.4s; }
+
+    /* ── DARK MODE — Full Website ──────────────────────── */
+    body.dark-mode {
+      --bg-main:        #0d1f1a;
+      --bg-card:        #122820;
+      --bg-dark-surface:#071510;
+      --text-main:      #e8f0ee;
+      --text-muted:     #95b0aa;
+      --text-light:     #6a8c85;
+      --border-light:   #1e3a33;
+      --color-primary-muted: rgba(255,255,255,0.05);
+      background-color: #0d1f1a !important;
+      color: #e8f0ee !important;
+    }
+    body.dark-mode .header-main        { background: #071510 !important; border-bottom-color: #1e3a33 !important; }
+    body.dark-mode .top-bar            { background: #050f0c !important; }
+    body.dark-mode .nav-link           { color: #c8deda !important; }
+    body.dark-mode .nav-link:hover,
+    body.dark-mode .nav-link.active    { color: var(--color-gold) !important; }
+    body.dark-mode .brand-name         { color: #fff !important; }
+    body.dark-mode .brand-tagline      { color: var(--color-gold-light) !important; }
+
+    /* Cards & Sections */
+    body.dark-mode .why-card,
+    body.dark-mode .testimonial-card,
+    body.dark-mode .hero-form-card,
+    body.dark-mode .contact-info-card  { background: #122820 !important; border-color: #1e3a33 !important; }
+    body.dark-mode .about-feature-box  { background: #0d1f1a !important; border-color: #1e3a33 !important; }
+    body.dark-mode .stats-bar          { background: #071510 !important; }
+    body.dark-mode .stat-number        { color: var(--color-gold) !important; }
+    body.dark-mode .stat-label         { color: #95b0aa !important; }
+
+    /* Sections background */
+    body.dark-mode section             { background-color: #0d1f1a !important; }
+    body.dark-mode .islamic-subtle-pattern,
+    body.dark-mode .islamic-bg-pattern { background-color: #0a1a16 !important; }
+
+    /* Form inputs */
+    body.dark-mode .form-control       { background: #0d1f1a !important; color: #e8f0ee !important; border-color: #2a4a42 !important; }
+    body.dark-mode .form-control::placeholder { color: #5a7a74 !important; }
+    body.dark-mode .form-label         { color: #95b0aa !important; }
+    body.dark-mode select.form-control,
+    body.dark-mode select.currency-select { background: #0d1f1a !important; color: #e8f0ee !important; }
+
+    /* Section text */
+    body.dark-mode .section-title      { color: #e8f0ee !important; }
+    body.dark-mode .section-subtitle   { color: #95b0aa !important; }
+    body.dark-mode h1, body.dark-mode h2,
+    body.dark-mode h3, body.dark-mode h4 { color: #e8f0ee !important; }
+    body.dark-mode p                   { color: #95b0aa !important; }
+
+    /* Footer */
+    body.dark-mode .footer-main        { background: #030d0a !important; }
+    body.dark-mode .footer-bottom      { border-top-color: #1a3530 !important; }
+    body.dark-mode .footer-link        { color: #7aa09a !important; }
+    body.dark-mode .footer-link:hover  { color: var(--color-gold) !important; }
+
+    /* Course & Why cards */
+    body.dark-mode .why-icon-box       { background: #0d1f1a !important; }
+    body.dark-mode .why-title          { color: #e8f0ee !important; }
+    body.dark-mode .why-text           { color: #95b0aa !important; }
+    body.dark-mode .course-tab-btn     { background: #122820 !important; color: #95b0aa !important; border-color: #1e3a33 !important; }
+    body.dark-mode .course-tab-btn.active { background: var(--color-primary) !important; color: #fff !important; }
+
+    /* Pricing & Shop */
+    body.dark-mode .pricing-grid > *,
+    body.dark-mode .shop-grid > *      { background: #122820 !important; border-color: #1e3a33 !important; color: #e8f0ee !important; }
+
+    /* Cart Drawer */
+    body.dark-mode .cart-drawer        { background: #071510 !important; }
+    body.dark-mode .cart-header        { background: #050f0c !important; }
+
+    /* Floating WhatsApp — no change needed */
+    body.dark-mode .theme-toggle-btn   { color: #fff; }
+
+    /* Smooth transition for everything */
+    body, body * {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* ── RTL / Urdu Mode Overrides ─────────────────────── */
     body.lang-ur {
       direction: rtl;
       font-family: 'Noto Nastaliq Urdu', serif;
       font-size: 1.05rem;
       line-height: 2;
     }
-    body.lang-ur .nav-menu { flex-direction: row-reverse; }
-    body.lang-ur .top-bar-inner { flex-direction: row-reverse; }
-    body.lang-ur .brand-text { text-align: right; }
-    body.lang-ur .footer-grid { direction: rtl; }
-    body.lang-ur .hero-content { text-align: right; }
+    body.lang-ur .nav-menu             { flex-direction: row-reverse; }
+    body.lang-ur .top-bar-inner        { flex-direction: row-reverse; }
+    body.lang-ur .brand-text           { text-align: right; }
+    body.lang-ur .footer-grid          { direction: rtl; }
+    body.lang-ur .hero-content         { text-align: right; }
     body.lang-ur .hero-highlights-grid { direction: rtl; }
-    body.lang-ur .hero-buttons { flex-direction: row-reverse; justify-content: flex-end; }
-    body.lang-ur .contact-detail-row { flex-direction: row-reverse; }
-    body.lang-ur .section-header { direction: rtl; }
-    body.lang-ur .about-features-list { direction: rtl; }
-    body.lang-ur .about-feature-box { flex-direction: row-reverse; text-align: right; }
-    body.lang-ur .why-card { direction: rtl; }
-    body.lang-ur .stat-item { flex-direction: row-reverse; }
+    body.lang-ur .hero-buttons         { flex-direction: row-reverse; justify-content: flex-end; }
+    body.lang-ur .contact-detail-row   { flex-direction: row-reverse; }
+    body.lang-ur .section-header       { direction: rtl; }
+    body.lang-ur .about-features-list  { direction: rtl; }
+    body.lang-ur .about-feature-box    { flex-direction: row-reverse; text-align: right; }
+    body.lang-ur .why-card             { direction: rtl; }
+    body.lang-ur .stat-item            { flex-direction: row-reverse; }
     body.lang-ur .testimonial-author-box { flex-direction: row-reverse; }
   </style>
 </head>
@@ -98,6 +197,12 @@
           <button class="lang-btn active" id="langBtnEN" onclick="setLanguage('en')">EN</button>
           <button class="lang-btn" id="langBtnUR" onclick="setLanguage('ur')">اردو</button>
         </div>
+
+        <!-- ===== DAY / NIGHT MODE TOGGLE ===== -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Day / Night Mode">
+          <span class="theme-icon" id="themeIcon">🌙</span>
+          <span id="themeLabel">Night</span>
+        </button>
 
         <!-- Live Currency Switcher -->
         <div style="display: flex; align-items: center; gap: 0.4rem;">
@@ -1181,7 +1286,36 @@
     document.addEventListener('DOMContentLoaded', function () {
       const saved = localStorage.getItem('kii-lang') || 'en';
       if (saved === 'ur') setLanguage('ur');
+
+      // Restore dark mode preference
+      const savedTheme = localStorage.getItem('kii-theme') || 'light';
+      if (savedTheme === 'dark') applyDarkMode(true);
     });
+
+    // ── Dark / Light Mode Toggle ─────────────────────────────────────────────
+    function toggleTheme() {
+      const isDark = document.body.classList.contains('dark-mode');
+      applyDarkMode(!isDark);
+    }
+
+    function applyDarkMode(enable) {
+      const btn   = document.getElementById('themeToggleBtn');
+      const icon  = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      const isUrdu = document.body.classList.contains('lang-ur');
+
+      if (enable) {
+        document.body.classList.add('dark-mode');
+        if (icon)  icon.textContent  = '☀️';
+        if (label) label.textContent = isUrdu ? 'دن' : 'Day';
+        localStorage.setItem('kii-theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        if (icon)  icon.textContent  = '🌙';
+        if (label) label.textContent = isUrdu ? 'رات' : 'Night';
+        localStorage.setItem('kii-theme', 'light');
+      }
+    }
   </script>
 </body>
 </html>
