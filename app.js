@@ -214,6 +214,7 @@ const DEFAULT_PRODUCTS = [
 document.addEventListener('DOMContentLoaded', () => {
   loadStoredData();
   initNavigation();
+  initHeroCarousel();
   initCurrencySelector();
   renderCourses();
   renderTeachers();
@@ -1392,4 +1393,246 @@ window.showToast = function(message, type = 'info') {
     toast.style.transition = 'all 0.3s ease';
     setTimeout(() => toast.remove(), 300);
   }, 3500);
+};
+
+// ===========================================================================
+// 14. HERO CAROUSEL CONTROLLER (Interactive 3-Slide Hero Slider)
+// ===========================================================================
+function initHeroCarousel() {
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const prevBtn = document.getElementById('carouselArrowPrev');
+  const nextBtn = document.getElementById('carouselArrowNext');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const progressBar = document.getElementById('carouselProgressBar');
+  const viewport = document.getElementById('carouselViewport');
+
+  if (!track || slides.length === 0) return;
+
+  let currentIndex = 0;
+  const totalSlides = slides.length;
+  const slideDuration = 5500; // 5.5 seconds per slide
+  let autoPlayTimer = null;
+  let progressStartTime = null;
+  let progressAnimFrame = null;
+  let isHovered = false;
+
+  function updateSlide(index, animate = true) {
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+    currentIndex = index;
+
+    // Smooth transform sliding
+    track.style.transition = animate ? 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    // Update active class on slides for accessibility and animation triggers
+    slides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === currentIndex);
+    });
+
+    // Update dots
+    dots.forEach((dot, idx) => {
+      const isActive = idx === currentIndex;
+      dot.classList.toggle('active', isActive);
+      dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    // Reset progress bar animation
+    resetProgressBar();
+  }
+
+  function nextSlide() {
+    updateSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    updateSlide(currentIndex - 1);
+  }
+
+  // Progress Bar Animation
+  function resetProgressBar() {
+    if (!progressBar) return;
+    if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
+    progressBar.style.width = '0%';
+    progressStartTime = performance.now();
+
+    function stepProgress(now) {
+      if (isHovered) {
+        // Paused on hover: keep progress static
+        progressStartTime = now - (parseFloat(progressBar.style.width || 0) / 100 * slideDuration);
+        progressAnimFrame = requestAnimationFrame(stepProgress);
+        return;
+      }
+      const elapsed = now - progressStartTime;
+      const pct = Math.min((elapsed / slideDuration) * 100, 100);
+      progressBar.style.width = pct + '%';
+      if (pct < 100) {
+        progressAnimFrame = requestAnimationFrame(stepProgress);
+      }
+    }
+    progressAnimFrame = requestAnimationFrame(stepProgress);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    resetProgressBar();
+    autoPlayTimer = setInterval(() => {
+      if (!isHovered) {
+        nextSlide();
+      }
+    }, slideDuration);
+  }
+
+  function stopAutoplay() {
+    if (autoPlayTimer) clearInterval(autoPlayTimer);
+    if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
+  }
+
+  // Arrow Clicks
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevSlide();
+      startAutoplay();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+      startAutoplay();
+    });
+  }
+
+  // Dot Clicks
+  dots.forEach((dot, idx) => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      updateSlide(idx);
+      startAutoplay();
+    });
+  });
+
+  // Pause on hover
+  const carouselSection = document.querySelector('.hero-carousel-section');
+  if (carouselSection) {
+    carouselSection.addEventListener('mouseenter', () => {
+      isHovered = true;
+    });
+    carouselSection.addEventListener('mouseleave', () => {
+      isHovered = false;
+    });
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+      return;
+    }
+    const rect = track.getBoundingClientRect();
+    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+        startAutoplay();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+        startAutoplay();
+      }
+    }
+  });
+
+  // Touch & Swipe Support for Mobile Screens
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+  let isSwiping = false;
+
+  if (viewport) {
+    viewport.addEventListener('touchstart', (e) => {
+      isHovered = true;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isSwiping = true;
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', (e) => {
+      if (!isSwiping) return;
+      touchEndX = e.touches[0].clientX;
+      touchEndY = e.touches[0].clientY;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', () => {
+      isHovered = false;
+      if (!isSwiping) return;
+      isSwiping = false;
+
+      const diffX = touchStartX - touchEndX;
+      const diffY = touchStartY - touchEndY;
+
+      // Ensure horizontal swipe is dominant over vertical scroll
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+        startAutoplay();
+      }
+    });
+  }
+
+  // "Join Now" Click Handling: Pre-select course in trial form and scroll smoothly
+  document.querySelectorAll('.carousel-join-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const courseName = btn.getAttribute('data-course');
+      const courseSelect = document.getElementById('trialCourseSelect');
+      if (courseSelect && courseName) {
+        // Select matching option
+        for (let i = 0; i < courseSelect.options.length; i++) {
+          if (courseSelect.options[i].value === courseName) {
+            courseSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
+      const trialCard = document.getElementById('trialFormCard') || document.getElementById('free-trial');
+      if (trialCard) {
+        trialCard.classList.remove('pulse-highlight');
+        void trialCard.offsetWidth; // trigger reflow
+        trialCard.classList.add('pulse-highlight');
+      }
+
+      if (window.showToast) {
+        window.showToast(`Selected "${courseName}". Fill in details to book free trial!`, 'info');
+      }
+    });
+  });
+
+  // Initial setup
+  updateSlide(0, false);
+  startAutoplay();
+}
+
+// Lightbox Modal for Full Poster Preview
+window.openPosterModal = function(imageSrc, title) {
+  const modalContent = `
+    <div style="text-align:center; padding: 0.5rem 0;">
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.35rem; margin-bottom:1rem; font-weight:700;">${title}</h3>
+      <div style="border-radius: 14px; overflow: hidden; border: 2px solid var(--color-gold); box-shadow: 0 15px 35px rgba(0,0,0,0.25); display:inline-block; max-width:100%; background:#05211c;">
+        <img src="${imageSrc}" alt="${title}" style="max-width:100%; max-height:70vh; height:auto; display:block; border-radius:12px; margin:0 auto;">
+      </div>
+      <div style="margin-top:1.25rem; display:flex; justify-content:center; gap:0.85rem; flex-wrap:wrap;">
+        <a href="#free-trial" onclick="closeModal();" class="btn btn-gold">
+          <i class="fas fa-check-circle"></i> Book 3-Day Free Trial
+        </a>
+        <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum!%20I%20am%20interested%20in%20${encodeURIComponent(title)}" target="_blank" class="btn btn-outline" style="border-color:var(--color-primary); color:var(--color-primary);">
+          <i class="fab fa-whatsapp" style="color:#25d366;"></i> Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  `;
+  window.showModal(modalContent, true);
 };

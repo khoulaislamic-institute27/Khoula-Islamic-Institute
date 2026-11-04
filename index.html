@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -282,143 +282,398 @@
   </header>
 
   <!-- =========================================================================
-       3. HERO SECTION (Welcoming Students + Quick Trial Booking Card)
+       3. HERO CAROUSEL SECTION (Interactive Slider with 3 Featured Programs)
        ========================================================================= -->
-  <section class="hero-section islamic-bg-pattern" id="home">
-    <div class="container hero-grid">
-      <!-- Left Column: Engaging Value Proposition -->
-      <div class="hero-content">
-        <div class="arabic-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        
-        <div class="hero-badge-wrap">
-          <span class="badge-gold">
-            <i class="fas fa-star"></i> Online Quran &amp; Islamic Studies Academy
-          </span>
-        </div>
+  <section class="hero-carousel-section" id="home" aria-label="Featured Programs Slider">
+    <!-- Autoplay Timer Progress Bar -->
+    <div class="carousel-progress-bar" id="carouselProgressBar"></div>
 
-        <h1 class="hero-title">
-          Master the Holy Quran with <span class="gold-gradient-text">Tajweed &amp; Deep Love</span> from Your Home
-        </h1>
+    <div class="carousel-wrapper">
+      <!-- Slides Viewport & Track -->
+      <div class="carousel-viewport" id="carouselViewport">
+        <div class="carousel-track" id="carouselTrack">
 
-        <p class="hero-subtitle">
-          Welcome to <strong>Khoula Islamic Institute</strong>. We provide personalized 1-on-1 live interactive sessions for <strong>kids, adult brothers, and sisters</strong> with polite, certified Qaris and female Alimahs.
-        </p>
+          <!-- SLIDE 1: NAZRA CLASSES -->
+          <div class="carousel-slide" data-index="0" data-course="Quran Reading & Nazra with Tajweed">
+            <div class="container slide-inner">
+              <div class="slide-grid">
+                <!-- Text Content -->
+                <div class="slide-content">
+                  <div class="slide-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                  <div class="slide-badge-wrap">
+                    <span class="slide-badge">
+                      <i class="fas fa-star-and-crescent"></i> Admissions Open • 3-Day Free Trial
+                    </span>
+                  </div>
+                  <h1 class="slide-title">
+                    Enroll Now in <span class="gold-gradient-text">Nazra Classes</span> with Certified Tajweed
+                  </h1>
+                  <p class="slide-desc">
+                    Connect with Quran, be near to Rehman. Master Holy Quran recitation with certified Tajweed experts carrying 15+ years of teaching excellence. Enjoy personalized 1-on-1, 30-minute live interactive sessions tailored for kids, adult brothers, and sisters.
+                  </p>
+                  <!-- Key Highlights Chips -->
+                  <div class="slide-features">
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-award"></i></div>
+                      <div class="chip-text">
+                        <strong>15 Years Experience</strong>
+                        <span>Tajweed &amp; Punctuation Focused</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-video"></i></div>
+                      <div class="chip-text">
+                        <strong>30 Min Live Class</strong>
+                        <span>1-on-1 Interactive Tutoring</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-user-check"></i></div>
+                      <div class="chip-text">
+                        <strong>Qualified Scholars</strong>
+                        <span>Male &amp; Dedicated Female Tutors</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-chart-line"></i></div>
+                      <div class="chip-text">
+                        <strong>Progress Tracking</strong>
+                        <span>Customized Plans &amp; Assessments</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Action Buttons -->
+                  <div class="slide-actions">
+                    <a href="#free-trial" class="btn btn-gold btn-hero-cta carousel-join-btn" data-course="Quran Reading & Nazra with Tajweed">
+                      <i class="fas fa-user-plus"></i> Join Now
+                    </a>
+                    <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum!%20I%20want%20to%20inquire%20about%20Nazra%20Classes%20at%20Khoula%20Islamic%20Institute" target="_blank" class="btn btn-outline-white">
+                      <i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Inquiry
+                    </a>
+                  </div>
+                </div>
 
-        <!-- Key Highlights Badges -->
-        <div class="hero-highlights-grid">
-          <div class="hero-highlight-item">
-            <div class="highlight-icon"><i class="fas fa-video"></i></div>
-            <span>1-on-1 Live Interactive Classes</span>
+                <!-- Poster Visual -->
+                <div class="slide-visual">
+                  <div class="slide-poster-card" onclick="openPosterModal('images/slide-nazra.jpg', 'Enroll Now in Nazra Classes')">
+                    <div class="poster-inner">
+                      <img src="images/slide-nazra.jpg" alt="Enroll Now in Nazra Classes - Khoula Islamic Institute" class="slide-img" loading="eager">
+                      <div class="poster-badge"><i class="fas fa-gift"></i> 3 Days Free Trial</div>
+                      <div class="poster-overlay">
+                        <span class="poster-zoom-pill"><i class="fas fa-search-plus"></i> Click to Enlarge</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="hero-highlight-item">
-            <div class="highlight-icon"><i class="far fa-clock"></i></div>
-            <span>24/7 Flexible Timings Worldwide</span>
-          </div>
-          <div class="hero-highlight-item">
-            <div class="highlight-icon"><i class="fas fa-female"></i></div>
-            <span>Certified Female &amp; Male Tutors</span>
-          </div>
-          <div class="hero-highlight-item">
-            <div class="highlight-icon"><i class="fas fa-gift"></i></div>
-            <span>3-Day Free Trial (No Card Needed)</span>
-          </div>
-        </div>
 
-        <div class="hero-buttons">
-          <a href="#free-trial" class="btn btn-gold">
-            <i class="fas fa-calendar-check"></i> Book a 3-Day Free Trial
-          </a>
-          <a href="#courses" class="btn btn-outline-white">
-            <i class="fas fa-book-open"></i> Explore Courses
-          </a>
+          <!-- SLIDE 2: GUIDED HIFZ & REVISION PROGRAM -->
+          <div class="carousel-slide" data-index="1" data-course="Hifz-ul-Quran (Full & Partial)">
+            <div class="container slide-inner">
+              <div class="slide-grid">
+                <!-- Text Content -->
+                <div class="slide-content">
+                  <div class="slide-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                  <div class="slide-badge-wrap">
+                    <span class="slide-badge">
+                      <i class="fas fa-quran"></i> Classical 3-Tier Memorization
+                    </span>
+                  </div>
+                  <h2 class="slide-title">
+                    Master the Quran: <span class="gold-gradient-text">Guided Hifz &amp; Revision</span> Program
+                  </h2>
+                  <p class="slide-desc">
+                    Achieve lifelong Quranic memorization through our time-tested classical system: Daily Sabaq (1–2 new pages), Sabqi (recent 3–5 days consolidation), and Manzil (weekly complete Juz revision) with dedicated 1-to-1 certified Huffaz.
+                  </p>
+                  <!-- Key Highlights Chips -->
+                  <div class="slide-features">
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-book-reader"></i></div>
+                      <div class="chip-text">
+                        <strong>Sabaq • Sabqi • Manzil</strong>
+                        <span>Proven 3-Tier Memorization</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-user-graduate"></i></div>
+                      <div class="chip-text">
+                        <strong>1-to-1 Live Tutoring</strong>
+                        <span>Certified Huffaz Mentors</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-calendar-alt"></i></div>
+                      <div class="chip-text">
+                        <strong>Flexible Timings</strong>
+                        <span>Fits School &amp; Work Schedules</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-clipboard-check"></i></div>
+                      <div class="chip-text">
+                        <strong>Monthly Reports</strong>
+                        <span>Personalized Retention Tracking</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Action Buttons -->
+                  <div class="slide-actions">
+                    <a href="#free-trial" class="btn btn-gold btn-hero-cta carousel-join-btn" data-course="Hifz-ul-Quran (Full & Partial)">
+                      <i class="fas fa-user-plus"></i> Join Now
+                    </a>
+                    <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum!%20I%20want%20to%20inquire%20about%20Guided%20Hifz%20Program" target="_blank" class="btn btn-outline-white">
+                      <i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Inquiry
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Poster Visual -->
+                <div class="slide-visual">
+                  <div class="slide-poster-card" onclick="openPosterModal('images/slide-hifz.jpg', 'Master The Quran: Guided Hifz & Revision Program')">
+                    <div class="poster-inner">
+                      <img src="images/slide-hifz.jpg" alt="Master The Quran: Guided Hifz & Revision Program - Khoula Islamic Institute" class="slide-img" loading="lazy">
+                      <div class="poster-badge"><i class="fas fa-award"></i> Structured Hifz</div>
+                      <div class="poster-overlay">
+                        <span class="poster-zoom-pill"><i class="fas fa-search-plus"></i> Click to Enlarge</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 3: TRANSLATION & TAFSEER IN DEPTH -->
+          <div class="carousel-slide" data-index="2" data-course="Tafseer-o-Tarjuma (Word-by-Word)">
+            <div class="container slide-inner">
+              <div class="slide-grid">
+                <!-- Text Content -->
+                <div class="slide-content">
+                  <div class="slide-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                  <div class="slide-badge-wrap">
+                    <span class="slide-badge">
+                      <i class="fas fa-lightbulb"></i> Connect Ancient Wisdom with Today's Solutions
+                    </span>
+                  </div>
+                  <h2 class="slide-title">
+                    Master the Quran: <span class="gold-gradient-text">Translation &amp; Tafseer</span> for Modern World
+                  </h2>
+                  <p class="slide-desc">
+                    Go beyond recitation into deep Quranic understanding. Word-by-word and verse-by-verse translation, classical and contemporary scholarly insights, and practical Islamic solutions for mental peace, anxiety, modern ethics, and family life.
+                  </p>
+                  <!-- Key Highlights Chips -->
+                  <div class="slide-features">
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-spell-check"></i></div>
+                      <div class="chip-text">
+                        <strong>Word-by-Word Tafseer</strong>
+                        <span>Detailed Ayat Analysis</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-heart"></i></div>
+                      <div class="chip-text">
+                        <strong>Mental Peace &amp; Solutions</strong>
+                        <span>Bridging Faith &amp; Modern Life</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-users"></i></div>
+                      <div class="chip-text">
+                        <strong>30 Min Live Discussions</strong>
+                        <span>Mentor-Led Interactive Q&amp;A</span>
+                      </div>
+                    </div>
+                    <div class="feature-chip">
+                      <div class="chip-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                      <div class="chip-text">
+                        <strong>Practical Application</strong>
+                        <span>Ethics, Finance &amp; Social Guidance</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Action Buttons -->
+                  <div class="slide-actions">
+                    <a href="#free-trial" class="btn btn-gold btn-hero-cta carousel-join-btn" data-course="Tafseer-o-Tarjuma (Word-by-Word)">
+                      <i class="fas fa-user-plus"></i> Join Now
+                    </a>
+                    <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum!%20I%20want%20to%20inquire%20about%20Translation%20and%20Tafseer%20Course" target="_blank" class="btn btn-outline-white">
+                      <i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Inquiry
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Poster Visual -->
+                <div class="slide-visual">
+                  <div class="slide-poster-card" onclick="openPosterModal('images/slide-translation.jpg', 'Master The Quran: Translation In Depth for the Modern World')">
+                    <div class="poster-inner">
+                      <img src="images/slide-translation.jpg" alt="Master The Quran: Translation In Depth - Khoula Islamic Institute" class="slide-img" loading="lazy">
+                      <div class="poster-badge"><i class="fas fa-brain"></i> Applied Wisdom</div>
+                      <div class="poster-overlay">
+                        <span class="poster-zoom-pill"><i class="fas fa-search-plus"></i> Click to Enlarge</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- Right Column: Instant Free Trial Registration Card -->
-      <div class="hero-form-card" id="free-trial">
-        <h3 class="form-card-title">Book a 3-Day Free Trial Class</h3>
-        <p class="form-card-subtitle">Zero commitments. Pick your course and schedule.</p>
+      <!-- Left & Right Arrow Controls -->
+      <button class="carousel-arrow carousel-arrow-prev" id="carouselArrowPrev" aria-label="Previous Slide">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="carousel-arrow carousel-arrow-next" id="carouselArrowNext" aria-label="Next Slide">
+        <i class="fas fa-chevron-right"></i>
+      </button>
 
-        <form id="trialRegistrationForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="studentName">Student Full Name *</label>
-              <input type="text" id="studentName" class="form-control" required placeholder="e.g. Zayd / Fatima">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="parentName">Parent / Guardian Name</label>
-              <input type="text" id="parentName" class="form-control" placeholder="For children applicants">
-            </div>
-          </div>
+      <!-- Carousel Pagination Dots -->
+      <div class="carousel-pagination" id="carouselPagination" role="tablist" aria-label="Slides Navigation">
+        <button class="carousel-dot active" data-slide="0" aria-label="Go to Slide 1: Nazra Classes" role="tab" aria-selected="true"></button>
+        <button class="carousel-dot" data-slide="1" aria-label="Go to Slide 2: Guided Hifz & Revision" role="tab" aria-selected="false"></button>
+        <button class="carousel-dot" data-slide="2" aria-label="Go to Slide 3: Translation & Tafseer" role="tab" aria-selected="false"></button>
+      </div>
+    </div>
+  </section>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="studentEmail">Email Address *</label>
-              <input type="email" id="studentEmail" class="form-control" required placeholder="name@example.com">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="studentPhone">WhatsApp / Mobile *</label>
-              <input type="tel" id="studentPhone" class="form-control" required placeholder="+92 300 1234567">
-            </div>
-          </div>
+  <!-- =========================================================================
+       4. KEY ACADEMY STATISTICS BAR
+       ========================================================================= -->
+  <div class="stats-bar">
+    <div class="container stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon-wrap"><i class="fas fa-user-graduate"></i></div>
+        <div>
+          <div class="stat-number">1,500+</div>
+          <div class="stat-label">Active Global Students</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon-wrap"><i class="fas fa-quran"></i></div>
+        <div>
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Certified Qaris &amp; Alimahs</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon-wrap"><i class="fas fa-globe-americas"></i></div>
+        <div>
+          <div class="stat-number">25+</div>
+          <div class="stat-label">Countries Represented</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon-wrap"><i class="fas fa-heart"></i></div>
+        <div>
+          <div class="stat-number">99.4%</div>
+          <div class="stat-label">Parent Satisfaction Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="trialCourseSelect">Select Course *</label>
-              <select id="trialCourseSelect" class="form-control" required>
-                <option value="Quran Reading & Nazra with Tajweed">Quran Reading &amp; Nazra with Tajweed</option>
-                <option value="Noorani Qaida & Yassarnal Quran">Noorani Qaida &amp; Yassarnal Quran</option>
-                <option value="Hifz-ul-Quran (Full & Partial)">Hifz-ul-Quran (Memorization)</option>
-                <option value="Tafseer-o-Tarjuma (Word-by-Word)">Tafseer-o-Tarjuma Translation</option>
-                <option value="Islamic Studies & Daily Duas for Kids">Islamic Studies &amp; Daily Duas for Kids</option>
-                <option value="Dedicated Sisters & Daughters Program">Dedicated Sisters &amp; Daughters Program</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="tutorPrefSelect">Tutor Preference</label>
-              <select id="tutorPrefSelect" class="form-control">
-                <option value="No Preference">No Preference (Best Match)</option>
-                <option value="Female Tutor">Dedicated Female Tutor (Alimah/Qariah)</option>
-                <option value="Male Tutor">Certified Male Tutor (Qari/Hafiz)</option>
-              </select>
-            </div>
-          </div>
+  <!-- =========================================================================
+       4.1. INSTANT FREE TRIAL RESERVATION SECTION
+       ========================================================================= -->
+  <section class="trial-booking-section islamic-bg-pattern" id="free-trial">
+    <div class="container">
+      <div class="section-header text-center" style="max-width: 720px; margin: 0 auto 2.5rem auto;">
+        <span class="badge-gold"><i class="fas fa-gift"></i> Start with Confidence • 3 Days Free</span>
+        <h2 class="section-title">Book Your <span class="gold-gradient-text">3-Day Free Trial</span> Class</h2>
+        <p class="section-subtitle">Zero commitment. No credit card required. Experience 1-on-1 personalized tutoring with our certified male and female scholars.</p>
+      </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="trialTimeSlot">Preferred Time Slot</label>
-              <select id="trialTimeSlot" class="form-control">
-                <option value="Morning (7:00 AM - 11:00 AM)">Morning (7:00 AM - 11:00 AM)</option>
-                <option value="Afternoon (1:00 PM - 5:00 PM)">Afternoon (1:00 PM - 5:00 PM)</option>
-                <option value="Evening (5:00 PM - 9:00 PM)" selected>Evening (5:00 PM - 9:00 PM)</option>
-                <option value="Night (9:00 PM - 12:00 AM)">Night (9:00 PM - 12:00 AM)</option>
-                <option value="Weekend Flexible">Weekend Flexible</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="trialTimezone">Your Time Zone</label>
-              <select id="trialTimezone" class="form-control">
-                <option value="PKT (UTC+5)">PKT - Pakistan Standard Time (UTC+5)</option>
-                <option value="EST (UTC-5)">EST - USA / Canada Eastern (UTC-5)</option>
-                <option value="CST (UTC-6)">CST - USA / Canada Central (UTC-6)</option>
-                <option value="PST (UTC-8)">PST - USA Pacific (UTC-8)</option>
-                <option value="GMT/BST (UTC+0/+1)">GMT / BST - United Kingdom</option>
-                <option value="GST (UTC+4)">GST - UAE / Dubai (UTC+4)</option>
-                <option value="AST (UTC+3)">AST - Saudi Arabia / Qatar (UTC+3)</option>
-                <option value="AEST (UTC+10)">AEST - Sydney / Australia (UTC+10)</option>
-              </select>
-            </div>
-          </div>
+      <div class="trial-booking-card-wrapper">
+        <div class="hero-form-card trial-form-card" id="trialFormCard">
+          <h3 class="form-card-title">Book a 3-Day Free Trial Class</h3>
+          <p class="form-card-subtitle">Zero commitments. Pick your course and schedule.</p>
 
-          <div class="form-group">
-            <label class="form-label" for="trialNotes">Learning Goals / Notes</label>
-            <input type="text" id="trialNotes" class="form-control" placeholder="e.g. Starting from Qaida, child is 6 years old">
-          </div>
+          <form id="trialRegistrationForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="studentName">Student Full Name *</label>
+                <input type="text" id="studentName" class="form-control" required placeholder="e.g. Zayd / Fatima">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="parentName">Parent / Guardian Name</label>
+                <input type="text" id="parentName" class="form-control" placeholder="For children applicants">
+              </div>
+            </div>
 
-          <button type="submit" class="btn btn-gold btn-block" style="margin-top: 0.5rem;">
-            <i class="fas fa-paper-plane"></i> Submit &amp; Reserve Free Trial
-          </button>
-        </form>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="studentEmail">Email Address *</label>
+                <input type="email" id="studentEmail" class="form-control" required placeholder="name@example.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="studentPhone">WhatsApp / Mobile *</label>
+                <input type="tel" id="studentPhone" class="form-control" required placeholder="+92 300 1234567">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="trialCourseSelect">Select Course *</label>
+                <select id="trialCourseSelect" class="form-control" required>
+                  <option value="Quran Reading & Nazra with Tajweed">Quran Reading &amp; Nazra with Tajweed</option>
+                  <option value="Noorani Qaida & Yassarnal Quran">Noorani Qaida &amp; Yassarnal Quran</option>
+                  <option value="Hifz-ul-Quran (Full & Partial)">Hifz-ul-Quran (Memorization)</option>
+                  <option value="Tafseer-o-Tarjuma (Word-by-Word)">Tafseer-o-Tarjuma Translation</option>
+                  <option value="Islamic Studies & Daily Duas for Kids">Islamic Studies &amp; Daily Duas for Kids</option>
+                  <option value="Dedicated Sisters & Daughters Program">Dedicated Sisters &amp; Daughters Program</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="tutorPrefSelect">Tutor Preference</label>
+                <select id="tutorPrefSelect" class="form-control">
+                  <option value="No Preference">No Preference (Best Match)</option>
+                  <option value="Female Tutor">Dedicated Female Tutor (Alimah/Qariah)</option>
+                  <option value="Male Tutor">Certified Male Tutor (Qari/Hafiz)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="trialTimeSlot">Preferred Time Slot</label>
+                <select id="trialTimeSlot" class="form-control">
+                  <option value="Morning (7:00 AM - 11:00 AM)">Morning (7:00 AM - 11:00 AM)</option>
+                  <option value="Afternoon (1:00 PM - 5:00 PM)">Afternoon (1:00 PM - 5:00 PM)</option>
+                  <option value="Evening (5:00 PM - 9:00 PM)" selected>Evening (5:00 PM - 9:00 PM)</option>
+                  <option value="Night (9:00 PM - 12:00 AM)">Night (9:00 PM - 12:00 AM)</option>
+                  <option value="Weekend Flexible">Weekend Flexible</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="trialTimezone">Your Time Zone</label>
+                <select id="trialTimezone" class="form-control">
+                  <option value="PKT (UTC+5)">PKT - Pakistan Standard Time (UTC+5)</option>
+                  <option value="EST (UTC-5)">EST - USA / Canada Eastern (UTC-5)</option>
+                  <option value="CST (UTC-6)">CST - USA / Canada Central (UTC-6)</option>
+                  <option value="PST (UTC-8)">PST - USA Pacific (UTC-8)</option>
+                  <option value="GMT/BST (UTC+0/+1)">GMT / BST - United Kingdom</option>
+                  <option value="GST (UTC+4)">GST - UAE / Dubai (UTC+4)</option>
+                  <option value="AST (UTC+3)">AST - Saudi Arabia / Qatar (UTC+3)</option>
+                  <option value="AEST (UTC+10)">AEST - Sydney / Australia (UTC+10)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trialNotes">Learning Goals / Notes</label>
+              <input type="text" id="trialNotes" class="form-control" placeholder="e.g. Starting from Qaida, child is 6 years old">
+            </div>
+
+            <button type="submit" class="btn btn-gold btn-block" style="margin-top: 0.5rem;">
+              <i class="fas fa-paper-plane"></i> Submit &amp; Reserve Free Trial
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
