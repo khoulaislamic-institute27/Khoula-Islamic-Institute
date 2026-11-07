@@ -322,24 +322,66 @@ function initCurrencySelector() {
 }
 
 // ---------------------------------------------------------------------------
-// 4. NAVIGATION & MOBILE MENU
+// 4. NAVIGATION & HAMBURGER DRAWER MENU (Tadeebul Quran Style)
 // ---------------------------------------------------------------------------
 function initNavigation() {
   const toggleBtn = document.getElementById('mobileMenuToggle');
-  const navMenu = document.getElementById('navMenu');
+  const navDrawer = document.getElementById('navMenu');
+  const overlay = document.getElementById('navDrawerOverlay');
+  const closeBtn = document.getElementById('navDrawerClose');
 
-  if (toggleBtn && navMenu) {
-    toggleBtn.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-    });
+  function openMenu() {
+    if (navDrawer) navDrawer.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    if (toggleBtn) {
+      toggleBtn.classList.add('active');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
 
-    // Close when clicking any nav link
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-      });
+  function closeMenu() {
+    if (navDrawer) navDrawer.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    if (toggleBtn) {
+      toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (navDrawer && navDrawer.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
   }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', closeMenu);
+  }
+
+  // Close when pressing Esc key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navDrawer && navDrawer.classList.contains('active')) {
+      closeMenu();
+    }
+  });
+
+  // Close menu and smooth scroll when clicking any nav link
+  document.querySelectorAll('.nav-drawer .nav-link, .nav-drawer a').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
 
   // Smooth scroll for internal links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {

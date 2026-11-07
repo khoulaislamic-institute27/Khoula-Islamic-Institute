@@ -232,7 +232,7 @@
   </div>
 
   <!-- =========================================================================
-       2. MAIN NAVIGATION HEADER
+       2. MAIN NAVIGATION HEADER (Tadeebul Quran style with clean Hamburger Navigation)
        ========================================================================= -->
   <header class="header-main">
     <div class="container header-inner">
@@ -245,22 +245,7 @@
         </div>
       </a>
 
-      <!-- Desktop Navigation Menu -->
-      <nav>
-        <ul class="nav-menu" id="navMenu">
-          <li><a href="#home" class="nav-link active">Home</a></li>
-          <li><a href="#about" class="nav-link">About Us</a></li>
-          <li><a href="#courses" class="nav-link">Courses</a></li>
-          <li><a href="#why-us" class="nav-link">Why Choose Us</a></li>
-          <li><a href="#teachers" class="nav-link">Faculty</a></li>
-          <li><a href="#shop" class="nav-link">Islamic Store</a></li>
-          <li><a href="#pricing" class="nav-link">Fee Plans</a></li>
-          <li><a href="student-portal.html" target="_blank" class="nav-link" style="color:var(--color-primary); font-weight:700;"><i class="fas fa-laptop-code" style="color:var(--color-gold);"></i> Classroom</a></li>
-          <li><a href="#contact" class="nav-link">Contact Us</a></li>
-        </ul>
-      </nav>
-
-      <!-- Header Actions: Cart & Primary CTA -->
+      <!-- Header Right Actions: Cart, Free Trial & Hamburger Menu Button -->
       <div class="header-actions">
         <!-- Slide-out Cart Trigger -->
         <button class="cart-btn-trigger" id="cartTrigger" title="View Shopping Cart">
@@ -269,14 +254,65 @@
         </button>
 
         <!-- Prominent Free Trial Button -->
-        <a href="#free-trial" class="btn btn-gold btn-sm">
+        <a href="#free-trial" class="btn btn-gold btn-sm header-trial-cta">
           <i class="fas fa-gift"></i> Book Free Trial
         </a>
 
-        <!-- Mobile Menu Hamburger -->
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open Navigation Menu">
-          <i class="fas fa-bars"></i>
+        <!-- Hamburger Menu Trigger (Visible on all screen sizes like Tadeebul Quran) -->
+        <button class="hamburger-menu-btn" id="mobileMenuToggle" aria-label="Toggle Navigation Menu" aria-expanded="false" title="Menu">
+          <span class="hamburger-box">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </span>
+          <span class="hamburger-label">Menu</span>
         </button>
+      </div>
+    </div>
+
+    <!-- Backdrop Overlay for Menu Drawer -->
+    <div class="nav-drawer-overlay" id="navDrawerOverlay"></div>
+
+    <!-- Navigation Drawer / Slide-Out Menu -->
+    <div class="nav-drawer" id="navMenu">
+      <div class="nav-drawer-header">
+        <div class="nav-drawer-brand">
+          <img src="logo.png" alt="Logo" onerror="this.src='logo.jpg'" class="nav-drawer-logo">
+          <div>
+            <strong class="nav-drawer-title">Navigation Menu</strong>
+            <span class="nav-drawer-subtitle">Khoula Islamic Institute</span>
+          </div>
+        </div>
+        <button class="nav-drawer-close" id="navDrawerClose" aria-label="Close Navigation Menu">&times;</button>
+      </div>
+
+      <div class="nav-drawer-body">
+        <ul class="nav-drawer-list">
+          <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> <span>Home</span></a></li>
+          <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> <span>About Us</span></a></li>
+          <li><a href="#courses" class="nav-link"><i class="fas fa-book-open"></i> <span>Courses &amp; Syllabus</span></a></li>
+          <li><a href="#why-us" class="nav-link"><i class="fas fa-award"></i> <span>Why Choose Us</span></a></li>
+          <li><a href="#teachers" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> <span>Faculty &amp; Qaris</span></a></li>
+          <li><a href="#pricing" class="nav-link"><i class="fas fa-tags"></i> <span>Fee Packages</span></a></li>
+          <li><a href="#shop" class="nav-link"><i class="fas fa-store"></i> <span>Islamic Store</span></a></li>
+          <li><a href="#testimonials" class="nav-link"><i class="fas fa-star"></i> <span>Reviews &amp; Stories</span></a></li>
+          <li><a href="student-portal.html" target="_blank" class="nav-link nav-highlight-link"><i class="fas fa-laptop-code"></i> <span>Student Classroom LMS</span></a></li>
+          <li><a href="#contact" class="nav-link"><i class="fas fa-envelope-open-text"></i> <span>Contact Us</span></a></li>
+        </ul>
+
+        <div class="nav-drawer-cta-box">
+          <div class="nav-drawer-cta-header">
+            <i class="fas fa-star-and-crescent" style="color:var(--color-gold);"></i>
+            <strong>Start Learning Today</strong>
+          </div>
+          <p>Book a 1-on-1 3-Day Free Trial class with certified male or female tutors.</p>
+          <a href="#free-trial" class="btn btn-gold btn-block nav-drawer-trial-btn">
+            <i class="fas fa-calendar-check"></i> Book 3-Day Free Trial
+          </a>
+          <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum!%20I%20want%20to%20inquire%20about%20classes" target="_blank" class="nav-drawer-wa-btn">
+            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -1602,15 +1638,15 @@
 
     // ── Add data-i18n attributes to elements (auto-map on page load) ─────────
     const elementMap = [
-      // Nav links
-      { selector: '#navMenu a[href="#home"]',      key: 'nav-home',       type: 'text' },
-      { selector: '#navMenu a[href="#about"]',     key: 'nav-about',      type: 'text' },
-      { selector: '#navMenu a[href="#courses"]',   key: 'nav-courses',    type: 'text' },
-      { selector: '#navMenu a[href="#why-us"]',    key: 'nav-whyus',      type: 'text' },
-      { selector: '#navMenu a[href="#teachers"]',  key: 'nav-teachers',   type: 'text' },
-      { selector: '#navMenu a[href="#shop"]',      key: 'nav-shop',       type: 'text' },
-      { selector: '#navMenu a[href="#pricing"]',   key: 'nav-pricing',    type: 'text' },
-      { selector: '#navMenu a[href="#contact"]',   key: 'nav-contact',    type: 'text' },
+      // Nav links (target both text spans or direct links)
+      { selector: '#navMenu a[href="#home"] span',      key: 'nav-home',       type: 'text' },
+      { selector: '#navMenu a[href="#about"] span',     key: 'nav-about',      type: 'text' },
+      { selector: '#navMenu a[href="#courses"] span',   key: 'nav-courses',    type: 'text' },
+      { selector: '#navMenu a[href="#why-us"] span',    key: 'nav-whyus',      type: 'text' },
+      { selector: '#navMenu a[href="#teachers"] span',  key: 'nav-teachers',   type: 'text' },
+      { selector: '#navMenu a[href="#shop"] span',      key: 'nav-shop',       type: 'text' },
+      { selector: '#navMenu a[href="#pricing"] span',   key: 'nav-pricing',    type: 'text' },
+      { selector: '#navMenu a[href="#contact"] span',   key: 'nav-contact',    type: 'text' },
       // Hero
       { selector: '.hero-badge-wrap .badge-gold',  key: 'hero-badge',     type: 'innerHTML', iconClass: 'fas fa-star' },
       { selector: '.hero-title',                   key: 'hero-title',     type: 'innerHTML' },
