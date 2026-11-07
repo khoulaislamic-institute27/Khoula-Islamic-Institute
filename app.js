@@ -46,12 +46,13 @@ const DEFAULT_COURSES = [
   },
   {
     id: 'c2',
-    title: 'Quran Reading & Nazra with Tajweed',
+    title: 'Monthly Tajweed & Quran Course',
     category: 'tajweed',
-    level: 'All Ages',
+    level: 'All Ages (Kids & Adults)',
     duration: '30-45 Mins / Class',
     description: 'Learn to recite the Holy Quran fluently with precise Tajweed rules including Ahkam al-Noon & Meem, Ghunnah, Qalqalah, Rules of Raa, and Waqf (stopping signs).',
-    badge: 'Most Enrolled',
+    badge: 'Most Popular',
+    popular: true,
     topics: ['Ahkam-e-Noon Saakin & Tanween', 'Ahkam-e-Meem Saakin', 'Qalqalah & Ghunnah Perfection', 'Madd Rules & Waqf Signs']
   },
   {
@@ -224,11 +225,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initCart();
   initAdminModal();
   initWhatsAppWidget();
+  initTestimonialsCarousel();
 });
 
 function loadStoredData() {
   const savedCourses = localStorage.getItem('khoula_courses');
   APP_STATE.courses = savedCourses ? JSON.parse(savedCourses) : DEFAULT_COURSES;
+  const c2 = APP_STATE.courses.find(c => c.id === 'c2');
+  if (c2) {
+    c2.popular = true;
+    c2.badge = 'Most Popular';
+    if (!c2.title.includes('Monthly')) c2.title = 'Monthly Tajweed & Quran Course';
+  }
 
   const savedTeachers = localStorage.getItem('khoula_teachers');
   APP_STATE.teachers = savedTeachers ? JSON.parse(savedTeachers) : DEFAULT_TEACHERS;
@@ -358,8 +366,11 @@ function renderCourses(filterCategory = 'all') {
     ? APP_STATE.courses 
     : APP_STATE.courses.filter(c => c.category === filterCategory);
 
-  grid.innerHTML = filtered.map(course => `
-    <div class="course-card">
+  grid.innerHTML = filtered.map(course => {
+    const isPopular = course.id === 'c2' || course.popular || course.title.toLowerCase().includes('tajweed');
+    return `
+    <div class="course-card ${isPopular ? 'popular-gold-border' : ''}">
+      ${isPopular ? '<div class="popular-ribbon"><i class="fas fa-crown"></i> Most Popular Course</div>' : ''}
       <div class="course-card-banner">
         <span class="course-badge-level">${course.level}</span>
         <div class="course-card-icon-wrap">
@@ -369,7 +380,7 @@ function renderCourses(filterCategory = 'all') {
       <div class="course-card-body">
         <div class="course-meta-tags">
           <span class="course-meta-pill"><i class="far fa-clock"></i> ${course.duration}</span>
-          <span class="course-meta-pill"><i class="fas fa-tag"></i> ${course.badge}</span>
+          <span class="course-meta-pill"><i class="fas fa-tag"></i> ${isPopular ? 'Top Enrolled' : course.badge}</span>
         </div>
         <h3 class="course-title">${course.title}</h3>
         <p class="course-description">${course.description}</p>
@@ -377,13 +388,14 @@ function renderCourses(filterCategory = 'all') {
           <button class="btn btn-outline-gold btn-sm" onclick="openCourseDetails('${course.id}')">
             View Syllabus
           </button>
-          <button class="btn btn-primary btn-sm" onclick="quickEnrollCourse('${course.title}')">
-            Book Trial
+          <button class="btn ${isPopular ? 'btn-gold' : 'btn-primary'} btn-sm" onclick="quickEnrollCourse('${course.title.replace(/'/g, "\\'")}')">
+            <i class="fas fa-calendar-check"></i> Book Trial
           </button>
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
   // Tab button active states
   document.querySelectorAll('.course-tab-btn').forEach(btn => {
@@ -592,7 +604,7 @@ const BASE_PLANS = [
   },
   {
     id: 'regular',
-    name: 'Standard Plan',
+    name: 'Monthly Tajweed & Quran Course',
     frequency: '3 Days / Week',
     classesCount: '12 Classes / Month (30 min ea)',
     baseUSD: 48.0,
@@ -1636,3 +1648,150 @@ window.openPosterModal = function(imageSrc, title) {
   `;
   window.showModal(modalContent, true);
 };
+
+// ---------------------------------------------------------------------------
+// 12. TESTIMONIALS CAROUSEL & VIDEO STORY LOGIC
+// ---------------------------------------------------------------------------
+let currentTestiIndex = 0;
+let testiAutoplayTimer = null;
+
+function initTestimonialsCarousel() {
+  const slides = document.querySelectorAll('.testi-slide');
+  if (!slides || slides.length === 0) return;
+
+  const box = document.getElementById('testiCarouselBox');
+  if (box) {
+    box.addEventListener('mouseenter', () => clearInterval(testiAutoplayTimer));
+    box.addEventListener('mouseleave', () => startTestiAutoplay());
+  }
+
+  setTestiSlide(0);
+  startTestiAutoplay();
+}
+
+function startTestiAutoplay() {
+  clearInterval(testiAutoplayTimer);
+  testiAutoplayTimer = setInterval(() => {
+    nextTestiSlide();
+  }, 6000);
+}
+
+window.setTestiSlide = function(index) {
+  const slides = document.querySelectorAll('.testi-slide');
+  const dots = document.querySelectorAll('.testi-dot');
+  if (slides.length === 0) return;
+
+  if (index >= slides.length) index = 0;
+  if (index < 0) index = slides.length - 1;
+  currentTestiIndex = index;
+
+  slides.forEach((slide, idx) => {
+    slide.classList.toggle('active', idx === currentTestiIndex);
+  });
+
+  dots.forEach((dot, idx) => {
+    dot.classList.toggle('active', idx === currentTestiIndex);
+  });
+};
+
+window.nextTestiSlide = function() {
+  setTestiSlide(currentTestiIndex + 1);
+};
+
+window.prevTestiSlide = function() {
+  setTestiSlide(currentTestiIndex - 1);
+};
+
+// Video Testimonial Spotlight Modal
+window.openVideoTestimonialModal = function() {
+  const modalContent = `
+    <div style="text-align: left; padding: 0.5rem 0;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.85rem;">
+        <div>
+          <span class="badge-gold" style="font-size: 0.78rem;"><i class="fas fa-video"></i> Verified Student Recitation</span>
+          <h3 style="font-family: var(--font-heading); color: var(--color-primary-dark); font-size: 1.4rem; font-weight: 800; margin-top: 0.35rem;">
+            Ayaan's Quran Journey (Surah Al-Mulk)
+          </h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+      </div>
+
+      <div style="background: #042416; border-radius: 12px; overflow: hidden; position: relative; margin-bottom: 1.5rem; border: 2px solid var(--color-gold);">
+        <div style="position: relative; aspect-ratio: 16/9; background: url('https://images.unsplash.com/photo-1584281729288-89826acac94f?auto=format&fit=crop&w=800&q=80') center/cover;">
+          <div style="position: absolute; inset: 0; background: rgba(4, 36, 22, 0.65); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; color: #fff; text-align: center; padding: 1.5rem;">
+            <button onclick="playTeacherAudio('ayaan-demo', 'https://everyayah.com/data/Alafasy_128kbps/067001.mp3')" class="play-pulse-btn" style="cursor: pointer; border: none;" title="Listen to Recitation">
+              <i class="fas fa-play" id="icon-ayaan-demo" style="margin-left: 4px;"></i>
+            </button>
+            <div style="font-size: 1.15rem; font-family: var(--font-arabic); color: var(--color-gold-light);">
+              تَبَٰرَكَ ٱلَّذِى بِيَدِهِ ٱلْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌ
+            </div>
+            <p style="font-size: 0.88rem; color: #d1deda; max-width: 420px;">
+              Click play to listen to 8-year-old student recitation recording guided by Ustadha Fatima.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: var(--color-gold-pale); border-radius: 10px; padding: 1.15rem 1.35rem; border: 1px solid var(--color-gold-border); margin-bottom: 1.5rem;">
+        <strong style="color: #8b6814; display: block; font-size: 0.95rem; margin-bottom: 0.35rem;">
+          <i class="fas fa-comment-dots"></i> Note from Ayaan's Mother (London, UK):
+        </strong>
+        <p style="font-size: 0.9rem; color: #2C2C2C; line-height: 1.6; margin: 0;">
+          "Ayaan started with zero Arabic knowledge 3 months ago. The patience, 1-on-1 pacing, and Tajweed corrections transformed his pronunciation completely. Now he recites Surah Al-Mulk every night before sleeping!"
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.85rem; justify-content: flex-end; flex-wrap: wrap;">
+        <button onclick="closeModal()" class="btn btn-outline" style="border-color: var(--border-light); color: var(--text-main);">
+          Close Preview
+        </button>
+        <a href="#free-trial" onclick="closeModal();" class="btn btn-gold">
+          <i class="fas fa-calendar-check"></i> Book Your Child's Free Trial
+        </a>
+      </div>
+    </div>
+  `;
+  window.showModal(modalContent, true);
+};
+
+// Quick Trial Booking from Pre-Footer Dark Banner
+window.handleQuickBannerTrial = function(e) {
+  e.preventDefault();
+  const nameInput = document.getElementById('quickBannerName');
+  const phoneInput = document.getElementById('quickBannerPhone');
+  const courseInput = document.getElementById('quickBannerCourse');
+
+  const name = nameInput ? nameInput.value : '';
+  const phone = phoneInput ? phoneInput.value : '';
+  const course = courseInput ? courseInput.value : 'Quran Reading & Nazra with Tajweed';
+
+  const studentNameField = document.getElementById('studentName');
+  const studentPhoneField = document.getElementById('studentPhone');
+  const trialCourseSelect = document.getElementById('trialCourseSelect');
+
+  if (studentNameField) studentNameField.value = name;
+  if (studentPhoneField) studentPhoneField.value = phone;
+  if (trialCourseSelect) {
+    for (let i = 0; i < trialCourseSelect.options.length; i++) {
+      if (trialCourseSelect.options[i].value === course || trialCourseSelect.options[i].value.includes('Tajweed')) {
+        trialCourseSelect.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+  const trialSection = document.getElementById('free-trial');
+  if (trialSection) {
+    trialSection.scrollIntoView({ behavior: 'smooth' });
+    showToast(`Assalam-o-Alaikum ${name}! Please confirm your time slot to book your free trial.`);
+  }
+};
+
+// Dismiss Sticky Bottom Bar
+window.dismissStickyBar = function() {
+  const bar = document.getElementById('stickyBottomBar');
+  if (bar) {
+    bar.classList.add('hidden');
+  }
+};
+
