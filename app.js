@@ -1528,14 +1528,9 @@ function initHeroCarousel() {
     progressAnimFrame = requestAnimationFrame(stepProgress);
   }
 
+  // Auto-play disabled — manual navigation only (arrows, dots, swipe, keyboard)
   function startAutoplay() {
-    stopAutoplay();
-    resetProgressBar();
-    autoPlayTimer = setInterval(() => {
-      if (!isHovered) {
-        nextSlide();
-      }
-    }, slideDuration);
+    // Auto-play intentionally disabled; manual controls only
   }
 
   function stopAutoplay() {
@@ -1548,14 +1543,12 @@ function initHeroCarousel() {
     prevBtn.addEventListener('click', (e) => {
       e.preventDefault();
       prevSlide();
-      startAutoplay();
     });
   }
   if (nextBtn) {
     nextBtn.addEventListener('click', (e) => {
       e.preventDefault();
       nextSlide();
-      startAutoplay();
     });
   }
 
@@ -1564,7 +1557,6 @@ function initHeroCarousel() {
     dot.addEventListener('click', (e) => {
       e.preventDefault();
       updateSlide(idx);
-      startAutoplay();
     });
   });
 
@@ -1588,10 +1580,8 @@ function initHeroCarousel() {
     if (rect.bottom > 0 && rect.top < window.innerHeight) {
       if (e.key === 'ArrowLeft') {
         prevSlide();
-        startAutoplay();
       } else if (e.key === 'ArrowRight') {
         nextSlide();
-        startAutoplay();
       }
     }
   });
@@ -1632,7 +1622,6 @@ function initHeroCarousel() {
         } else {
           prevSlide();
         }
-        startAutoplay();
       }
     });
   }
@@ -1665,9 +1654,8 @@ function initHeroCarousel() {
     });
   });
 
-  // Initial setup
+  // Initial setup — show first slide, no auto-play
   updateSlide(0, false);
-  startAutoplay();
 }
 
 // Lightbox Modal for Full Poster Preview
