@@ -1,137 +1,203 @@
 /**
  * ==========================================================================
- * Google Firebase Configuration & Real-Time Cloud Database Setup
+ * Google Firebase Configuration & Unified Database Services
  * Khoula Islamic Institute (khoulainstituteofquranicstudies.com)
  * ==========================================================================
- * 
- * TAREEQA (INSTRUCTIONS):
- * 1. console.firebase.google.com par jayen aur project banayein.
- * 2. Web App (</>) add karein aur wahan se milne wali keys neeche paste karein.
- * 3. Firestore Database enable karein.
- * 4. Jaise hi aap keys paste karenge, website ka tamam data (Free Trials,
- *    Shop Orders, Contact messages) foran Firebase Cloud par save hone lagega!
  */
 
-// Yahan apni Firebase Console se mili hui keys paste karein:
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY_HERE",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA6NdDpp1UmNLC5eFkYAtrStjAjWFLrLjs",
+  authDomain: "khoula-islamic-institute.firebaseapp.com",
+  projectId: "khoula-islamic-institute",
+  storageBucket: "khoula-islamic-institute.firebasestorage.app",
+  messagingSenderId: "771674251214",
+  appId: "1:771674251214:web:ab6da261e857a380e5959f"
 };
 
-// Global Firebase Database Reference
+// Global Firebase References
 window.firebaseDB = null;
+window.firebaseAuth = null;
 window.isFirebaseConnected = false;
 
 try {
-  // Check if user has replaced placeholder keys
-  if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE" && typeof firebase !== 'undefined') {
-    firebase.initializeApp(firebaseConfig);
+  if (firebaseConfig.apiKey && typeof firebase !== 'undefined') {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     window.firebaseDB = firebase.firestore();
+    if (firebase.auth) {
+      window.firebaseAuth = firebase.auth();
+    }
     window.isFirebaseConnected = true;
-    console.log("✅ Google Firebase Cloud Firestore successfully connected to Khoula Islamic Institute!");
-  } else {
-    console.info("ℹ️ Firebase is in Offline/Demo mode. Paste your Firebase keys in firebase-config.js to sync with Google Cloud.");
+    console.log("✅ Google Firebase Cloud Firestore successfully initialized!");
   }
 } catch (error) {
   console.warn("Firebase initialization notice:", error.message);
 }
 
-/**
- * Helper function: Save Free Trial Booking to Firebase
- */
+// ==========================================
+// UNIFIED FIRESTORE HELPERS & CRUD SERVICE
+// ==========================================
+window.KII_DB = {
+  // Collection Names
+  COLLECTIONS: {
+    TRIALS: "trial_bookings",
+    STUDENTS: "students",
+    TEACHERS: "teachers",
+    COURSES: "courses",
+    CLASSES: "classes",
+    ATTENDANCE: "attendance",
+    PAYMENTS: "payments",
+    INVOICES: "invoices",
+    PROGRESS: "student_progress",
+    ORDERS: "shop_orders",
+    PRODUCTS: "products",
+    INQUIRIES: "contact_inquiries",
+    TESTIMONIALS: "testimonials",
+    CMS: "website_content",
+    NOTIFICATIONS: "notifications",
+    ADMIN_USERS: "admin_users",
+    LOGS: "activity_logs"
+  },
+
+  // Generic Get All Documents
+  async getAll(collectionName, orderByField = "createdAt", orderDirection = "desc") {
+    if (window.firebaseDB) {
+      try {
+        let query = window.firebaseDB.collection(collectionName);
+        if (orderByField) {
+          try {
+            query = query.orderBy(orderByField, orderDirection);
+          } catch(e) {
+            console.warn("Index sort fallback for", collectionName);
+          }
+        }
+        const snapshot = await query.get();
+        const docs = [];
+        snapshot.forEach(doc => {
+          docs.push({ id: doc.id, ...doc.data() });
+        });
+        return docs;
+      } catch (err) {
+        console.error(`Error reading ${collectionName}:`, err);
+        return this.getLocal(collectionName);
+      }
+    }
+    return this.getLocal(collectionName);
+  },
+
+  // Realtime Listener
+  onCollectionChange(collectionName, callback) {
+    if (window.firebaseDB) {
+      return window.firebaseDB.collection(collectionName).onSnapshot(snapshot => {
+        const docs = [];
+        snapshot.forEach(doc => {
+          docs.push({ id: doc.id, ...doc.data() });
+        });
+        callback(docs);
+      }, err => {
+        console.error(`Listener error on ${collectionName}:`, err);
+        callback(this.getLocal(collectionName));
+      });
+    }
+    callback(this.getLocal(collectionName));
+    return () => {};
+  },
+
+  // Save / Update with custom ID or auto ID
+  async setDoc(collectionName, docId, data) {
+    const payload = {
+      ...data,
+      updatedAt: firebase?.firestore?.FieldValue ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+    };
+    if (window.firebaseDB) {
+      if (docId) {
+        await window.firebaseDB.collection(collectionName).doc(docId).set(payload, { merge: true });
+        this.logActivity(`Saved ${collectionName} item`, collectionName, docId);
+        return docId;
+      } else {
+        payload.createdAt = firebase?.firestore?.FieldValue ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString();
+        const ref = await window.firebaseDB.collection(collectionName).add(payload);
+        this.logActivity(`Created ${collectionName} item`, collectionName, ref.id);
+        return ref.id;
+      }
+    }
+    // Local fallback
+    return this.saveLocal(collectionName, docId, payload);
+  },
+
+  // Delete Document
+  async deleteDoc(collectionName, docId) {
+    if (window.firebaseDB) {
+      await window.firebaseDB.collection(collectionName).doc(docId).delete();
+      this.logActivity(`Deleted ${collectionName} item`, collectionName, docId);
+      return true;
+    }
+    return this.deleteLocal(collectionName, docId);
+  },
+
+  // Audit Activity Logger
+  async logActivity(action, module, recordId = "") {
+    try {
+      const log = {
+        action,
+        module,
+        recordId,
+        adminUser: localStorage.getItem("khoula_admin_email") || "admin@khoula.org",
+        timestamp: new Date().toISOString()
+      };
+      if (window.firebaseDB) {
+        await window.firebaseDB.collection(this.COLLECTIONS.LOGS).add({
+          ...log,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    } catch (e) {
+      console.warn("Audit log notice:", e);
+    }
+  },
+
+  // LocalStorage Helpers for smooth offline/fallback experience
+  getLocal(collectionName) {
+    const raw = localStorage.getItem(`kii_local_${collectionName}`);
+    return raw ? JSON.parse(raw) : [];
+  },
+
+  saveLocal(collectionName, docId, data) {
+    const list = this.getLocal(collectionName);
+    const id = docId || `LOCAL-${Date.now()}`;
+    const idx = list.findIndex(item => item.id === id);
+    const item = { id, ...data };
+    if (idx >= 0) {
+      list[idx] = item;
+    } else {
+      list.unshift(item);
+    }
+    localStorage.setItem(`kii_local_${collectionName}`, JSON.stringify(list));
+    return id;
+  },
+
+  deleteLocal(collectionName, docId) {
+    let list = this.getLocal(collectionName);
+    list = list.filter(item => item.id !== docId);
+    localStorage.setItem(`kii_local_${collectionName}`, JSON.stringify(list));
+    return true;
+  }
+};
+
+// Backward-compatible global bindings for existing website forms
 window.saveBookingToFirebase = function(bookingData) {
-  return new Promise((resolve, reject) => {
-    if (window.firebaseDB) {
-      window.firebaseDB.collection("trial_bookings").doc(bookingData.id).set({
-        ...bookingData,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then(() => {
-        console.log("🔥 Successfully saved trial booking to Google Firebase Cloud:", bookingData.id);
-        resolve(true);
-      })
-      .catch((err) => {
-        console.error("Firebase booking save error:", err);
-        reject(err);
-      });
-    } else {
-      resolve(false); // Saved in localStorage fallback
-    }
-  });
+  return window.KII_DB.setDoc(window.KII_DB.COLLECTIONS.TRIALS, bookingData.id, bookingData);
 };
 
-/**
- * Helper function: Save Shop Order to Firebase
- */
 window.saveOrderToFirebase = function(orderData) {
-  return new Promise((resolve, reject) => {
-    if (window.firebaseDB) {
-      window.firebaseDB.collection("shop_orders").doc(orderData.id).set({
-        ...orderData,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then(() => {
-        console.log("🔥 Successfully saved shop order to Google Firebase Cloud:", orderData.id);
-        resolve(true);
-      })
-      .catch((err) => {
-        console.error("Firebase order save error:", err);
-        reject(err);
-      });
-    } else {
-      resolve(false);
-    }
-  });
+  return window.KII_DB.setDoc(window.KII_DB.COLLECTIONS.ORDERS, orderData.id, orderData);
 };
 
-/**
- * Helper function: Save Contact Inquiry to Firebase
- */
 window.saveInquiryToFirebase = function(inquiryData) {
-  return new Promise((resolve, reject) => {
-    if (window.firebaseDB) {
-      window.firebaseDB.collection("contact_inquiries").add({
-        ...inquiryData,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then((docRef) => {
-        console.log("🔥 Successfully saved contact inquiry to Google Firebase Cloud, ID:", docRef.id);
-        resolve(docRef.id);
-      })
-      .catch((err) => {
-        console.error("Firebase inquiry save error:", err);
-        reject(err);
-      });
-    } else {
-      resolve(false);
-    }
-  });
+  return window.KII_DB.setDoc(window.KII_DB.COLLECTIONS.INQUIRIES, null, inquiryData);
 };
 
-/**
- * Helper function: Save Daily Student Sabaq Progress to Firebase
- */
 window.saveSabaqProgressToFirebase = function(sabaqData) {
-  return new Promise((resolve, reject) => {
-    if (window.firebaseDB) {
-      window.firebaseDB.collection("student_progress").add({
-        ...sabaqData,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then(() => {
-        console.log("🔥 Successfully logged Sabaq to Google Firebase Cloud!");
-        resolve(true);
-      })
-      .catch((err) => {
-        console.error("Firebase Sabaq save error:", err);
-        reject(err);
-      });
-    } else {
-      resolve(false);
-    }
-  });
+  return window.KII_DB.setDoc(window.KII_DB.COLLECTIONS.PROGRESS, null, sabaqData);
 };

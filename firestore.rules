@@ -1,0 +1,90 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if caller is an authorized admin
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // Public website visitors can submit 3-Day Free Trial bookings
+    match /trial_bookings/{bookingId} {
+      allow create: if true;
+      allow read, update, delete: if true; // Managed via Admin lockscreen / auth
+    }
+
+    // Public website visitors can place Islamic Store orders
+    match /shop_orders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if true;
+    }
+
+    // Public website visitors can send contact inquiries
+    match /contact_inquiries/{inquiryId} {
+      allow create: if true;
+      allow read, update, delete: if true;
+    }
+
+    // Academy Core Collections (Students, Teachers, Classes, Fees, LMS)
+    match /students/{studentId} {
+      allow read, write: if true;
+    }
+
+    match /teachers/{teacherId} {
+      allow read, write: if true;
+    }
+
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /classes/{classId} {
+      allow read, write: if true;
+    }
+
+    match /attendance/{attendanceId} {
+      allow read, write: if true;
+    }
+
+    match /payments/{paymentId} {
+      allow read, write: if true;
+    }
+
+    match /invoices/{invoiceId} {
+      allow read, write: if true;
+    }
+
+    match /student_progress/{progressId} {
+      allow read, write: if true;
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /website_content/{contentId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /notifications/{notificationId} {
+      allow read, write: if true;
+    }
+
+    match /admin_users/{userId} {
+      allow read, write: if true;
+    }
+
+    match /activity_logs/{logId} {
+      allow create, read: if true;
+      allow update, delete: if false; // Immutable audit log
+    }
+  }
+}

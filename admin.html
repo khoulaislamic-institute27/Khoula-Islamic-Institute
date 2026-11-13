@@ -3,1013 +3,702 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin &amp; LMS Command Portal | Khoula Islamic Institute</title>
+  <title>Admin &amp; Academy Management System | Khoula Islamic Institute</title>
+  
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      background-color: #f1f5f4;
-      min-height: 100vh;
-    }
-    .admin-layout {
-      display: grid;
-      grid-template-columns: 270px 1fr;
-      min-height: 100vh;
-    }
-    .admin-sidebar {
-      background: var(--color-primary-dark);
-      color: #cbd5e1;
-      padding: 1.8rem 1.2rem;
-      border-right: 2px solid var(--color-gold-border);
-      display: flex;
-      flex-direction: column;
-    }
-    .admin-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 0.8rem 1rem;
-      border-radius: var(--radius-sm);
-      color: #b0c4bf;
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-bottom: 0.4rem;
-      transition: all var(--transition-fast);
-      text-decoration: none;
-    }
-    .admin-nav-item:hover, .admin-nav-item.active {
-      background: rgba(197, 155, 39, 0.15);
-      color: var(--color-gold-light);
-    }
-    .admin-nav-section-title {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #718d87;
-      margin: 1.2rem 0 0.5rem 0.5rem;
-      font-weight: 800;
-    }
-    .admin-main {
-      padding: 2.2rem 2.5rem;
-      overflow-y: auto;
-    }
-    .admin-card {
-      background: #ffffff;
-      border-radius: var(--radius-md);
-      padding: 1.8rem;
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 2rem;
-    }
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .metric-card {
-      background: #ffffff;
-      padding: 1.5rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-    }
-    .metric-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.9rem;
-    }
-    .data-table th {
-      background: #f8fafc;
-      padding: 0.85rem 1rem;
-      color: #475569;
-      font-weight: 700;
-      border-bottom: 1.5px solid #e2e8f0;
-    }
-    .data-table td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid #f1f5f9;
-      color: #334155;
-    }
-    .status-badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 9999px;
-      font-size: 0.76rem;
-      font-weight: 700;
-    }
-    .status-new { background: #fee2e2; color: #991b1b; }
-    .status-scheduled { background: #fef3c7; color: #92400e; }
-    .status-enrolled { background: #dcfce7; color: #166534; }
-  </style>
-</head>
-<body>
 
-  <!-- Lockscreen Gateway if not authenticated -->
-  <div id="adminLockscreen" style="position:fixed; inset:0; background:var(--color-primary-dark); z-index:9999; display:flex; align-items:center; justify-content:center; padding:1.5rem;">
-    <div style="background:#ffffff; border-radius:var(--radius-lg); padding:2.5rem; max-width:420px; width:100%; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.5); border:2px solid var(--color-gold-border);">
-      <div style="margin:0 auto 1.25rem auto;">
-        <img src="images/logo.png" alt="Khoula Islamic Institute" style="height: 90px; width: auto; object-fit: contain;">
+  <!-- FontAwesome 6 & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap">
+
+  <!-- Master Stylesheet & Custom Admin Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body class="admin-body">
+
+  <!-- =========================================================================
+       1. SECURITY LOCKSCREEN GATEWAY
+       ========================================================================= -->
+  <div id="adminLockscreen" style="position:fixed; inset:0; background:linear-gradient(135deg, var(--admin-primary-dark), #031c16); z-index:99999; display:flex; align-items:center; justify-content:center; padding:1.5rem;">
+    <div style="background:var(--admin-card-bg); border-radius:16px; padding:2.5rem; max-width:440px; width:100%; text-align:center; box-shadow:0 30px 70px rgba(0,0,0,0.5); border:1.5px solid var(--admin-gold-border);">
+      <div style="margin-bottom:1.25rem;">
+        <img src="logo.png" alt="Khoula Islamic Institute" onerror="this.src='logo.jpg'" style="height:90px; width:auto; object-fit:contain;">
       </div>
-      <h2 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.5rem; margin-bottom:0.4rem;">Admin Verification</h2>
-      <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:1.5rem;">Enter Khoula Islamic Institute administration passcode.</p>
+      <h2 style="color:var(--admin-primary-dark); font-size:1.55rem; font-weight:800; margin-bottom:0.3rem;">Khoula Institute Admin</h2>
+      <p style="color:var(--admin-text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Production Command Portal • Enter Authorized Credentials</p>
       
-      <form id="lockscreenForm" onsubmit="handleAdminLogin(event)">
-        <div class="form-group" style="text-align:left; margin-bottom:1.25rem;">
-          <label class="form-label">Security Passcode (Default: <code>khoula2026</code>)</label>
-          <input type="password" id="adminPassInput" class="form-control" required placeholder="Enter passcode" style="text-align:center; font-size:1.1rem; letter-spacing:2px;">
+      <form id="lockscreenForm" onsubmit="AdminApp.login(event)">
+        <div style="text-align:left; margin-bottom:1rem;">
+          <label style="font-size:0.8rem; font-weight:600; color:var(--admin-text-main); display:block; margin-bottom:0.4rem;">Select Role</label>
+          <select id="adminRoleSelect" class="admin-form-control">
+            <option value="Super Admin">Super Admin (Full Access)</option>
+            <option value="Admission Manager">Admission Manager</option>
+            <option value="Academic Manager">Academic Manager</option>
+            <option value="Accountant">Accountant / Finance</option>
+          </select>
         </div>
-        <button type="submit" class="btn btn-gold btn-block">Unlock Dashboard</button>
+
+        <div style="text-align:left; margin-bottom:1.5rem;">
+          <label style="font-size:0.8rem; font-weight:600; color:var(--admin-text-main); display:block; margin-bottom:0.4rem;">Master Security Passcode</label>
+          <input type="password" id="adminPassInput" class="admin-form-control" required placeholder="Default: khoula2026" style="text-align:center; font-size:1.15rem; letter-spacing:2px;">
+        </div>
+
+        <button type="submit" class="btn-admin btn-admin-gold" style="width:100%; justify-content:center; padding:0.8rem; font-size:0.95rem;">
+          <i class="fas fa-lock-open"></i> Unlock Dashboard
+        </button>
       </form>
-      <div style="margin-top:1.2rem;">
-        <a href="index.html" style="font-size:0.85rem; color:var(--color-primary); font-weight:600;">&larr; Return to Public Website</a>
+
+      <div style="margin-top:1.5rem; border-top:1px solid var(--admin-border); padding-top:1rem;">
+        <a href="index.html" style="font-size:0.82rem; color:var(--admin-primary); font-weight:600; text-decoration:none;">
+          &larr; Return to Live Public Website
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Authenticated Admin Layout -->
-  <div class="admin-layout" id="adminLayout" style="display:none;">
-    <!-- Sidebar Navigation -->
-    <aside class="admin-sidebar">
-      <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,0.1);">
-        <div class="brand-logo-badge" style="width:40px; height:40px; background:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-          <img src="logo.png" alt="Khoula Logo" onerror="this.src='logo.jpg'" style="height:30px; width:auto; object-fit:contain;">
-        </div>
-        <div>
-          <strong style="color:#fff; font-size:1.05rem; display:block;">Khoula Institute</strong>
-          <span style="font-size:0.72rem; color:var(--color-gold);">LMS &amp; Academy Operations</span>
+  <!-- =========================================================================
+       2. AUTHENTICATED PRODUCTION ADMIN LAYOUT
+       ========================================================================= -->
+  <div class="admin-layout-wrapper" id="adminLayout" style="display:none;">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <img src="logo.png" alt="Logo" class="sidebar-logo" onerror="this.src='logo.jpg'">
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-name">Khoula Institute</span>
+          <span class="sidebar-brand-tagline">Connect with Quran</span>
         </div>
       </div>
 
-      <nav style="flex-grow:1; overflow-y:auto;">
-        <a class="admin-nav-item active" id="nav-tabOverview" onclick="switchTab('tabOverview')">
-          <i class="fas fa-chart-pie"></i> <span>Overview</span>
+      <nav class="sidebar-nav-container">
+        <!-- Main Navigation -->
+        <a class="nav-item active" id="nav-tabOverview" onclick="AdminApp.switchTab('tabOverview')">
+          <i class="fas fa-chart-pie"></i> <span class="nav-text">Dashboard</span>
         </a>
 
-        <div class="admin-nav-section-title">LMS &amp; Academics</div>
-        <a class="admin-nav-item" id="nav-tabLmsEnrollments" onclick="switchTab('tabLmsEnrollments')">
-          <i class="fas fa-user-graduate"></i> <span>Student Enrollments</span>
+        <div class="nav-section-title">Admissions &amp; Students</div>
+        <a class="nav-item" id="nav-tabAdmissions" onclick="AdminApp.switchTab('tabAdmissions')">
+          <i class="fas fa-calendar-check"></i> <span class="nav-text">Admissions &amp; Trials</span>
         </a>
-        <a class="admin-nav-item" id="nav-tabLmsProgress" onclick="switchTab('tabLmsProgress')">
-          <i class="fas fa-clipboard-check"></i> <span>Daily Sabaq Tracker</span>
+        <a class="nav-item" id="nav-tabStudents" onclick="AdminApp.switchTab('tabStudents')">
+          <i class="fas fa-user-graduate"></i> <span class="nav-text">Students Registry</span>
         </a>
-        <a class="admin-nav-item" id="nav-tabCourses" onclick="switchTab('tabCourses')">
-          <i class="fas fa-book-open"></i> <span>Course Curriculum</span>
+        <a class="nav-item" id="nav-tabTeachers" onclick="AdminApp.switchTab('tabTeachers')">
+          <i class="fas fa-chalkboard-teacher"></i> <span class="nav-text">Teachers &amp; Faculty</span>
         </a>
 
-        <div class="admin-nav-section-title">Inquiries &amp; Commerce</div>
-        <a class="admin-nav-item" id="nav-tabBookings" onclick="switchTab('tabBookings')">
-          <i class="fas fa-calendar-check"></i> <span>Trial Bookings</span>
+        <div class="nav-section-title">Academics &amp; Classes</div>
+        <a class="nav-item" id="nav-tabCourses" onclick="AdminApp.switchTab('tabCourses')">
+          <i class="fas fa-book-open"></i> <span class="nav-text">Courses Catalog</span>
         </a>
-        <a class="admin-nav-item" id="nav-tabOrders" onclick="switchTab('tabOrders')">
-          <i class="fas fa-shopping-bag"></i> <span>Store Orders</span>
+        <a class="nav-item" id="nav-tabClasses" onclick="AdminApp.switchTab('tabClasses')">
+          <i class="fas fa-clock"></i> <span class="nav-text">Classes &amp; Timetable</span>
         </a>
-        <a class="admin-nav-item" id="nav-tabProducts" onclick="switchTab('tabProducts')">
-          <i class="fas fa-tags"></i> <span>Store Products</span>
+        <a class="nav-item" id="nav-tabAttendance" onclick="AdminApp.switchTab('tabAttendance')">
+          <i class="fas fa-user-check"></i> <span class="nav-text">Attendance Matrix</span>
+        </a>
+        <a class="nav-item" id="nav-tabProgress" onclick="AdminApp.switchTab('tabProgress')">
+          <i class="fas fa-medal"></i> <span class="nav-text">Sabaq &amp; Progress</span>
+        </a>
+
+        <div class="nav-section-title">Finance &amp; Commerce</div>
+        <a class="nav-item" id="nav-tabPayments" onclick="AdminApp.switchTab('tabPayments')">
+          <i class="fas fa-file-invoice-dollar"></i> <span class="nav-text">Fees &amp; Invoices</span>
+        </a>
+        <a class="nav-item" id="nav-tabOrders" onclick="AdminApp.switchTab('tabOrders')">
+          <i class="fas fa-shopping-bag"></i> <span class="nav-text">Islamic Store Orders</span>
+        </a>
+
+        <div class="nav-section-title">Communications &amp; CMS</div>
+        <a class="nav-item" id="nav-tabInquiries" onclick="AdminApp.switchTab('tabInquiries')">
+          <i class="fas fa-envelope-open-text"></i> <span class="nav-text">Contact Messages</span>
+        </a>
+        <a class="nav-item" id="nav-tabWebsiteCMS" onclick="AdminApp.switchTab('tabWebsiteCMS')">
+          <i class="fas fa-edit"></i> <span class="nav-text">Website Live CMS</span>
+        </a>
+        <a class="nav-item" id="nav-tabLogs" onclick="AdminApp.switchTab('tabLogs')">
+          <i class="fas fa-shield-alt"></i> <span class="nav-text">Security &amp; Audit Logs</span>
         </a>
       </nav>
 
-      <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1.2rem;">
-        <a href="student-portal.html" target="_blank" class="admin-nav-item" style="color:var(--color-gold-light);">
-          <i class="fas fa-laptop-code"></i> <span>Student Virtual Room</span>
+      <!-- Sidebar Footer Links -->
+      <div style="border-top:1px solid rgba(255,255,255,0.08); padding:0.75rem;">
+        <a href="student-portal.html" target="_blank" class="nav-item" style="color:var(--admin-gold);">
+          <i class="fas fa-laptop-code"></i> <span class="nav-text">Student LMS Portal</span>
         </a>
-        <a href="index.html" class="admin-nav-item" style="color:#94a3b8;">
-          <i class="fas fa-external-link-alt"></i> <span>Live Website</span>
+        <a href="index.html" target="_blank" class="nav-item" style="color:#94a3b8;">
+          <i class="fas fa-external-link-alt"></i> <span class="nav-text">Public Website</span>
         </a>
-        <a href="#" class="admin-nav-item" onclick="logoutAdmin()" style="color:#ef4444;">
-          <i class="fas fa-sign-out-alt"></i> <span>Lock Dashboard</span>
+        <a href="#" class="nav-item" onclick="AdminApp.logout()" style="color:#ef4444;">
+          <i class="fas fa-sign-out-alt"></i> <span class="nav-text">Lock Dashboard</span>
         </a>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="admin-main">
-      <!-- Top Title Header -->
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
-        <div>
-          <h1 style="font-family:var(--font-heading); font-size:2rem; color:var(--color-primary-dark); font-weight:800;" id="pageTitle">
-            Academy Overview
-          </h1>
-          <p style="color:var(--text-muted); font-size:0.95rem;">LMS Management for Khoula Islamic Institute</p>
-        </div>
-        <div style="display:flex; gap:0.75rem;">
-          <a href="student-portal.html" target="_blank" class="btn btn-gold btn-sm">
-            <i class="fas fa-video"></i> Open Virtual Classroom
-          </a>
-          <button class="btn btn-outline-gold btn-sm" onclick="exportData('bookings')">
-            <i class="fas fa-file-export"></i> Export Data
+    <!-- MAIN CONTENT CONTAINER -->
+    <div class="admin-content-area">
+      
+      <!-- TOP NAVIGATION BAR -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="toggle-sidebar-btn" onclick="AdminApp.toggleSidebar()" title="Toggle Sidebar">
+            <i class="fas fa-bars"></i>
           </button>
-        </div>
-      </div>
-
-      <!-- Top Metric Cards -->
-      <div class="metric-grid">
-        <div class="metric-card">
-          <div class="metric-icon" style="background:#dcfce7; color:#16a34a;">
-            <i class="fas fa-user-graduate"></i>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:var(--color-primary-dark);" id="totalEnrolledCount">12</div>
-            <div style="font-size:0.82rem; color:#64748b; font-weight:600;">Active LMS Students</div>
+          <div class="topbar-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Global Search (Student, Booking, Order, Phone)...">
           </div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-icon" style="background:#e0f2fe; color:#0284c7;">
-            <i class="fas fa-calendar-check"></i>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:var(--color-primary-dark);" id="totalBookingsCount">0</div>
-            <div style="font-size:0.82rem; color:#64748b; font-weight:600;">Trial Registrations</div>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-icon" style="background:#fef3c7; color:#d97706;">
-            <i class="fas fa-shopping-cart"></i>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:var(--color-primary-dark);" id="totalOrdersCount">0</div>
-            <div style="font-size:0.82rem; color:#64748b; font-weight:600;">Shop Orders</div>
+        <div class="topbar-right">
+          <button class="topbar-btn" onclick="AdminApp.toggleTheme()" title="Toggle Dark/Light Mode">
+            <i class="fas fa-moon"></i>
+          </button>
+          
+          <div class="admin-avatar-btn">
+            <div class="admin-avatar-img">KI</div>
+            <div class="admin-avatar-info">
+              <div class="admin-avatar-name" id="topbarAdminName">Principal Admin</div>
+              <div class="admin-avatar-role" id="topbarAdminRole">Super Admin</div>
+            </div>
           </div>
         </div>
+      </header>
 
-        <div class="metric-card">
-          <div class="metric-icon" style="background:#f3e8ff; color:#9333ea;">
-            <i class="fas fa-book"></i>
-          </div>
-          <div>
-            <div style="font-size:1.8rem; font-weight:800; color:var(--color-primary-dark);" id="totalCoursesCount">6</div>
-            <div style="font-size:0.82rem; color:#64748b; font-weight:600;">Active Courses</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 1: OVERVIEW -->
-      <div id="tabOverview">
-        <div class="admin-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-            <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.25rem;">
-              Recent Free Trial Inquiries &amp; Applicants
-            </h3>
-            <button class="btn btn-sm btn-gold" onclick="switchTab('tabBookings')">View All Inquiries</button>
-          </div>
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Student / Parent</th>
-                  <th>Course Requested</th>
-                  <th>Preferred Time</th>
-                  <th>WhatsApp</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="overviewBookingsTable">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: LMS ENROLLMENTS & STUDENTS -->
-      <div id="tabLmsEnrollments" style="display:none;">
-        <div class="admin-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+      <!-- DYNAMIC TAB PANES -->
+      <main class="admin-page-container">
+        
+        <!-- ==================== TAB: OVERVIEW ==================== -->
+        <div class="admin-tab-pane" id="tabOverview">
+          <div class="page-header-row">
             <div>
-              <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.35rem;">
-                Enrolled Students &amp; Assigned Qaris
-              </h3>
-              <p style="color:var(--text-muted); font-size:0.88rem;">Manage student rosters, weekly schedules, and virtual meeting rooms.</p>
+              <h1 class="page-title">Executive Overview</h1>
+              <p class="page-subtitle">Real-time Cloud Database Metrics &amp; Academy Analytics</p>
             </div>
-            <button class="btn btn-gold btn-sm" onclick="document.getElementById('enrollStudentFormBox').style.display='block'">
-              + Enroll New Student
+            <div style="display:flex; gap:0.6rem;">
+              <button class="btn-admin btn-admin-gold" onclick="AdminApp.switchTab('tabAdmissions')">
+                <i class="fas fa-calendar-check"></i> View Live Bookings
+              </button>
+              <a href="student-portal.html" target="_blank" class="btn-admin btn-admin-primary">
+                <i class="fas fa-video"></i> Virtual Classroom
+              </a>
+            </div>
+          </div>
+
+          <!-- KPI Metric Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background:#e0f2fe; color:#0284c7;">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiTotalTrials">0</div>
+                <div class="kpi-label">Free Trial Bookings</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background:#dcfce7; color:#16a34a;">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiTotalStudents">0</div>
+                <div class="kpi-label">Registered Students</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background:#fef3c7; color:#d97706;">
+                <i class="fas fa-chalkboard-teacher"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiTotalTeachers">0</div>
+                <div class="kpi-label">Certified Faculty</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background:#f3e8ff; color:#7e22ce;">
+                <i class="fas fa-coins"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiTotalRevenue">$0</div>
+                <div class="kpi-label">Monthly Revenue</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background:#fee2e2; color:#dc2626;">
+                <i class="fas fa-shopping-bag"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiTotalOrders">0</div>
+                <div class="kpi-label">Store Orders</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity & Shortcuts Grid -->
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:1.5rem;">
+            <div class="admin-card">
+              <div class="card-header-bar">
+                <span class="card-header-title"><i class="fas fa-bolt" style="color:var(--admin-gold);"></i> Live Activity Feed</span>
+                <span style="font-size:0.75rem; color:var(--admin-text-muted);">Synced with Firebase Cloud</span>
+              </div>
+              <div style="padding:1.25rem;" id="overviewRecentFeed">
+                <!-- Activity list -->
+              </div>
+            </div>
+
+            <div class="admin-card">
+              <div class="card-header-bar">
+                <span class="card-header-title"><i class="fas fa-star" style="color:var(--admin-gold);"></i> Quick Actions</span>
+              </div>
+              <div style="padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem;">
+                <button class="btn-admin btn-admin-outline" onclick="AdminApp.switchTab('tabStudents')" style="justify-content:flex-start;">
+                  <i class="fas fa-user-plus" style="color:var(--admin-gold);"></i> Register New Student
+                </button>
+                <button class="btn-admin btn-admin-outline" onclick="AdminApp.switchTab('tabTeachers')" style="justify-content:flex-start;">
+                  <i class="fas fa-user-tie" style="color:#0284c7;"></i> Add New Teacher
+                </button>
+                <button class="btn-admin btn-admin-outline" onclick="AdminApp.switchTab('tabClasses')" style="justify-content:flex-start;">
+                  <i class="fas fa-calendar-plus" style="color:#16a34a;"></i> Schedule Class Session
+                </button>
+                <button class="btn-admin btn-admin-outline" onclick="AdminApp.switchTab('tabPayments')" style="justify-content:flex-start;">
+                  <i class="fas fa-receipt" style="color:#7e22ce;"></i> Record Fee Payment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: ADMISSIONS / TRIALS ==================== -->
+        <div class="admin-tab-pane" id="tabAdmissions" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Admissions &amp; 3-Day Free Trials</h1>
+              <p class="page-subtitle">Direct real-time submissions from public website registration form</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="card-header-bar">
+              <span class="card-header-title"><i class="fas fa-list"></i> Incoming Free Trial Requests</span>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>Student &amp; Parent</th>
+                    <th>Course Requested</th>
+                    <th>WhatsApp Contact</th>
+                    <th>Time Slot &amp; Zone</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="trialsTableBody">
+                  <!-- Realtime entries rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: STUDENTS ==================== -->
+        <div class="admin-tab-pane" id="tabStudents" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Students Registry</h1>
+              <p class="page-subtitle">Active enrolled students, parent profiles &amp; monthly fees</p>
+            </div>
+            <button class="btn-admin btn-admin-gold" onclick="document.getElementById('modalAddStudent').classList.add('active')">
+              <i class="fas fa-plus"></i> Add New Student
             </button>
           </div>
 
-          <!-- Enroll Student Form -->
-          <div id="enrollStudentFormBox" style="display:none; background:#f8fafc; padding:1.5rem; border-radius:var(--radius-md); border:1.5px solid var(--color-gold-border); margin-bottom:2rem;">
-            <h4 style="margin-bottom:1rem; color:var(--color-primary-dark);">Enroll Student into Course</h4>
-            <form onsubmit="handleEnrollStudent(event)">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Student Name *</label>
-                  <input type="text" id="enrStudentName" class="form-control" required placeholder="Full Name">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Course *</label>
-                  <select id="enrCourseSelect" class="form-control" required>
-                    <option value="Quran Reading & Nazra with Tajweed">Quran Reading &amp; Nazra with Tajweed</option>
-                    <option value="Noorani Qaida & Yassarnal Quran">Noorani Qaida &amp; Yassarnal Quran</option>
-                    <option value="Hifz-ul-Quran (Full & Partial)">Hifz-ul-Quran (Memorization)</option>
-                    <option value="Tafseer-o-Tarjuma (Word-by-Word)">Tafseer-o-Tarjuma</option>
-                    <option value="Dedicated Sisters & Daughters Program">Dedicated Sisters &amp; Daughters Program</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Assigned Qari / Aalima *</label>
-                  <select id="enrTeacherSelect" class="form-control" required>
-                    <option value="Qari Abdul Rehman Al-Azhari">Qari Abdul Rehman Al-Azhari (Senior Qari)</option>
-                    <option value="Ustadha Fatima Zahra">Ustadha Fatima Zahra (Female Aalima)</option>
-                    <option value="Mufti Muhammad Zeeshan">Mufti Muhammad Zeeshan (Tafseer Faculty)</option>
-                    <option value="Ustadha Maryam Siddiqa">Ustadha Maryam Siddiqa (Hafiza &amp; Qariah)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Weekly Schedule</label>
-                  <input type="text" id="enrSchedule" class="form-control" placeholder="e.g. Mon-Wed-Fri 6:00 PM PKT" required>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Virtual Class Link (Zoom / Google Meet URL)</label>
-                <input type="url" id="enrZoomLink" class="form-control" placeholder="https://zoom.us/j/992182741">
-              </div>
-
-              <div style="display:flex; gap:0.75rem;">
-                <button type="submit" class="btn btn-gold">Complete Enrollment</button>
-                <button type="button" class="btn btn-outline-gold" onclick="document.getElementById('enrollStudentFormBox').style.display='none'">Cancel</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Roster Table -->
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Course Enrolled</th>
-                  <th>Assigned Tutor</th>
-                  <th>Schedule</th>
-                  <th>Progress</th>
-                  <th>Status</th>
-                  <th>Classroom</th>
-                </tr>
-              </thead>
-              <tbody id="enrolledStudentsTable">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Student &amp; Parent</th>
+                    <th>Enrolled Course</th>
+                    <th>Assigned Teacher</th>
+                    <th>Monthly Fee</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                  <!-- Realtime students -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- TAB 3: DAILY SABAQ & PROGRESS TRACKER -->
-      <div id="tabLmsProgress" style="display:none;">
-        <div class="admin-card">
-          <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.35rem; margin-bottom:0.4rem;">
-            Teacher Portal: Daily Quran Progress &amp; Sabaq Log
-          </h3>
-          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">
-            Record daily recitation performance, Sabaq (new lesson), Sabqi (recent revision), and Manzil for parents to review.
-          </p>
-
-          <form onsubmit="handleSaveSabaqProgress(event)" style="background:#f8fafc; padding:1.8rem; border-radius:var(--radius-md); border:1px solid #cbd5e1; margin-bottom:2rem;">
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Select Student *</label>
-                <select id="logStudentSelect" class="form-control" required>
-                  <option value="Zayd Khan">Zayd Khan (Nazra &amp; Tajweed)</option>
-                  <option value="Amina Farooq">Amina Farooq (Tahfeez-ul-Quran)</option>
-                  <option value="Dr. Tariq Mehmood">Dr. Tariq Mehmood (Quranic Arabic)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Attendance Today *</label>
-                <select id="logAttendance" class="form-control">
-                  <option value="Present (On Time)" selected>Present (On Time)</option>
-                  <option value="Present (Late 5 mins)">Present (Late 5 mins)</option>
-                  <option value="Excused Leave">Excused Leave</option>
-                  <option value="Absent">Absent</option>
-                </select>
-              </div>
+        <!-- ==================== TAB: TEACHERS ==================== -->
+        <div class="admin-tab-pane" id="tabTeachers" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Faculty &amp; Certified Teachers</h1>
+              <p class="page-subtitle">Male Qaris, Female Qariahs &amp; Certified Islamic Scholars</p>
             </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Today's Sabaq (New Lesson) *</label>
-                <input type="text" id="logSabaq" class="form-control" required placeholder="e.g. Surah Al-Baqarah Ayahs 11-20">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Sabaq Performance Grade *</label>
-                <select id="logGrade" class="form-control">
-                  <option value="Mumtaz / Excellent (A+)">Mumtaz / Excellent (A+)</option>
-                  <option value="Jayyid Jiddan / Very Good (A)">Jayyid Jiddan / Very Good (A)</option>
-                  <option value="Jayyid / Good (B)">Jayyid / Good (B)</option>
-                  <option value="Needs Revision (C)">Needs Revision (C)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Sabqi (Recent Revision)</label>
-                <input type="text" id="logSabqi" class="form-control" placeholder="e.g. Surah Al-Baqarah Ayahs 1-10">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Manzil (Cumulative Muraja'ah)</label>
-                <input type="text" id="logManzil" class="form-control" placeholder="e.g. Juz 30 (Surahs 1-15)">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Teacher Pedagogical Remarks &amp; Tajweed Guidance</label>
-              <textarea id="logRemarks" class="form-control" rows="2" placeholder="e.g. Excellent Ghunnah pronunciation; work slightly on Makharij of Qaf."></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-gold">
-              <i class="fas fa-save"></i> Save Daily Sabaq Record
-            </button>
-          </form>
-
-          <!-- Recent Progress Logs -->
-          <h4 style="font-family:var(--font-heading); color:var(--color-primary-dark); margin-bottom:1rem;">
-            Verified Performance History
-          </h4>
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Student</th>
-                  <th>Sabaq (New Lesson)</th>
-                  <th>Grade</th>
-                  <th>Attendance</th>
-                  <th>Teacher Remarks</th>
-                </tr>
-              </thead>
-              <tbody id="progressLogTable">
-                <tr>
-                  <td>2026-10-19</td>
-                  <td><strong>Zayd Khan</strong></td>
-                  <td>Surah Al-Baqarah (Ayahs 1-10)</td>
-                  <td><span class="status-badge status-enrolled">Mumtaz (A+)</span></td>
-                  <td>Present</td>
-                  <td>Accurate throat Makharij on Ayn and Haa.</td>
-                </tr>
-                <tr>
-                  <td>2026-10-18</td>
-                  <td><strong>Amina Farooq</strong></td>
-                  <td>Surah Al-Kahf (Ayahs 1-20)</td>
-                  <td><span class="status-badge status-enrolled">Mumtaz (A+)</span></td>
-                  <td>Present</td>
-                  <td>Perfect retention and Muraja'ah.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 4: ALL TRIAL BOOKINGS -->
-      <div id="tabBookings" style="display:none;">
-        <div class="admin-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
-            <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.25rem;">
-              Student Free Trial Registrations &amp; Scheduling
-            </h3>
-            <input type="text" id="bookingSearchInput" onkeyup="filterBookingsTable()" placeholder="Search bookings..." class="form-control" style="max-width:300px;">
-          </div>
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Student Name</th>
-                  <th>Parent</th>
-                  <th>Course</th>
-                  <th>Timezone / Slot</th>
-                  <th>Tutor Pref</th>
-                  <th>WhatsApp</th>
-                  <th>Status</th>
-                  <th>Manage</th>
-                </tr>
-              </thead>
-              <tbody id="fullBookingsTable">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 5: STORE ORDERS -->
-      <div id="tabOrders" style="display:none;">
-        <div class="admin-card">
-          <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.25rem; margin-bottom:1.5rem;">
-            Customer Orders (Physical Quran Books &amp; Accessories)
-          </h3>
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Contact</th>
-                  <th>Items Ordered</th>
-                  <th>Payment Method</th>
-                  <th>Total Amount</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="ordersTable">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 6: MANAGE COURSES -->
-      <div id="tabCourses" style="display:none;">
-        <div class="admin-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
-            <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.25rem;">
-              Academy Course Catalog &amp; Syllabi
-            </h3>
-            <button class="btn btn-gold btn-sm" onclick="document.getElementById('addCourseFormBox').style.display='block'">
-              + Add New Course
+            <button class="btn-admin btn-admin-gold" onclick="document.getElementById('modalAddTeacher').classList.add('active')">
+              <i class="fas fa-user-plus"></i> Add New Teacher
             </button>
           </div>
 
-          <!-- Add Course Form -->
-          <div id="addCourseFormBox" style="display:none; background:#f8fafc; padding:1.5rem; border-radius:var(--radius-md); border:1px solid #cbd5e1; margin-bottom:2rem;">
-            <h4 style="margin-bottom:1rem; color:var(--color-primary-dark);">Add New Academic Course</h4>
-            <form onsubmit="handleCreateCourse(event)">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Course Title *</label>
-                  <input type="text" id="admCourseTitle" class="form-control" required placeholder="e.g. Advanced Tajweed Mastery">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Category *</label>
-                  <select id="admCourseCategory" class="form-control">
-                    <option value="basics">Qaida &amp; Beginners</option>
-                    <option value="tajweed">Nazra &amp; Tajweed</option>
-                    <option value="hifz">Hifz Memorization</option>
-                    <option value="advanced">Tafseer &amp; Arabic</option>
-                    <option value="sisters">Sisters Special</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Target Audience / Level</label>
-                  <input type="text" id="admCourseLevel" class="form-control" placeholder="Kids 5+ &amp; Adults">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Duration</label>
-                  <input type="text" id="admCourseDuration" class="form-control" value="30-45 Mins / Class">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Description *</label>
-                <textarea id="admCourseDesc" class="form-control" rows="2" required placeholder="Describe course objectives and pedagogy"></textarea>
-              </div>
-              <div style="display:flex; gap:0.75rem;">
-                <button type="submit" class="btn btn-gold">Publish Course</button>
-                <button type="button" class="btn btn-outline-gold" onclick="document.getElementById('addCourseFormBox').style.display='none'">Cancel</button>
-              </div>
-            </form>
-          </div>
-
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Category</th>
-                  <th>Level</th>
-                  <th>Duration</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="coursesTableBody">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
+          <div class="kpi-grid" id="teachersCardGrid">
+            <!-- Dynamic Teacher cards -->
           </div>
         </div>
-      </div>
 
-      <!-- TAB 7: MANAGE PRODUCTS -->
-      <div id="tabProducts" style="display:none;">
-        <div class="admin-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
-            <h3 style="font-family:var(--font-heading); color:var(--color-primary-dark); font-size:1.25rem;">
-              Islamic Store Inventory
-            </h3>
-            <button class="btn btn-gold btn-sm" onclick="document.getElementById('addProductFormBox').style.display='block'">
-              + Add Product
+        <!-- ==================== TAB: COURSES ==================== -->
+        <div class="admin-tab-pane" id="tabCourses" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Courses &amp; Curriculum</h1>
+              <p class="page-subtitle">Manage academy programs, fees, and weekly frequency</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Course Name</th>
+                    <th>Category</th>
+                    <th>Duration</th>
+                    <th>Weekly Schedule</th>
+                    <th>Monthly Fee</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="coursesTableBody">
+                  <!-- Course list -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: CLASSES & TIMETABLE ==================== -->
+        <div class="admin-tab-pane" id="tabClasses" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Class Scheduling &amp; Timetable</h1>
+              <p class="page-subtitle">Schedule 1-on-1 live sessions with Zoom &amp; Google Meet links</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Time &amp; Zone</th>
+                    <th>Student Name</th>
+                    <th>Teacher</th>
+                    <th>Course</th>
+                    <th>Class Room Link</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="classesTableBody">
+                  <!-- Scheduled classes -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: ATTENDANCE ==================== -->
+        <div class="admin-tab-pane" id="tabAttendance" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Student Attendance Matrix</h1>
+              <p class="page-subtitle">Daily tracking, excuse logs, and monthly completion ratios</p>
+            </div>
+          </div>
+          <div class="admin-card" style="padding:2rem; text-align:center;">
+            <i class="fas fa-user-check" style="font-size:3rem; color:var(--admin-gold); margin-bottom:1rem;"></i>
+            <h3>Attendance Tracker Active</h3>
+            <p style="color:var(--admin-text-muted); max-width:500px; margin:0.5rem auto 1.5rem auto;">
+              Attendance is logged directly by assigned teachers during daily live classes. Records sync with the student's monthly report card.
+            </p>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: SABAQ & PROGRESS ==================== -->
+        <div class="admin-tab-pane" id="tabProgress" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Daily Sabaq &amp; Academic Progress</h1>
+              <p class="page-subtitle">Track Quran reading, Tajweed rules, and Hifz (Sabaq, Sabqi, Manzil)</p>
+            </div>
+          </div>
+          <div class="admin-card" style="padding:2rem; text-align:center;">
+            <i class="fas fa-quran" style="font-size:3rem; color:var(--admin-gold); margin-bottom:1rem;"></i>
+            <h3>Sabaq Tracker Connected</h3>
+            <p style="color:var(--admin-text-muted); max-width:500px; margin:0.5rem auto 1.5rem auto;">
+              Submissions from the teacher portal stream directly into student progress records.
+            </p>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: PAYMENTS & INVOICES ==================== -->
+        <div class="admin-tab-pane" id="tabPayments" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Fees &amp; Invoices</h1>
+              <p class="page-subtitle">Multi-currency payments (USD, GBP, EUR, AED, PKR) &amp; Sibling Discounts</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTableBody">
+                  <!-- Payments list -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: STORE ORDERS ==================== -->
+        <div class="admin-tab-pane" id="tabOrders" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Islamic Store Orders</h1>
+              <p class="page-subtitle">Customer book orders, Tajweed Qurans, prayer mats &amp; shipping details</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer &amp; Phone</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <!-- Orders list -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: CONTACT INQUIRIES ==================== -->
+        <div class="admin-tab-pane" id="tabInquiries" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Contact Messages &amp; Inquiries</h1>
+              <p class="page-subtitle">Public inquiries submitted from website contact section</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone (WhatsApp)</th>
+                    <th>Message</th>
+                    <th>Received At</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="inquiriesTableBody">
+                  <!-- Contact inquiries -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB: WEBSITE LIVE CMS ==================== -->
+        <div class="admin-tab-pane" id="tabWebsiteCMS" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Website Live Content Management (CMS)</h1>
+              <p class="page-subtitle">Update public website phone numbers, announcements &amp; copy without code</p>
+            </div>
+          </div>
+
+          <div class="admin-card" style="padding:1.75rem;">
+            <div class="admin-form-group">
+              <label class="admin-form-label">Main Official WhatsApp Number</label>
+              <input type="text" class="admin-form-control" value="+92 300 1234567" id="cmsWhatsApp">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label">Official Admissions Email</label>
+              <input type="email" class="admin-form-control" value="info@khoulainstituteofquranicstudies.com" id="cmsEmail">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label">Top Announcement Banner Text</label>
+              <input type="text" class="admin-form-control" value="Admissions Open: 3-Day Free Trial Classes Available Worldwide!" id="cmsBanner">
+            </div>
+            <button class="btn-admin btn-admin-gold" onclick="AdminApp.showToast('Website CMS changes published to Cloud!')">
+              <i class="fas fa-save"></i> Save &amp; Publish Changes
             </button>
           </div>
+        </div>
 
-          <!-- Add Product Box -->
-          <div id="addProductFormBox" style="display:none; background:#f8fafc; padding:1.5rem; border-radius:var(--radius-md); border:1px solid #cbd5e1; margin-bottom:2rem;">
-            <h4 style="margin-bottom:1rem; color:var(--color-primary-dark);">Add Product to Islamic Store</h4>
-            <form onsubmit="handleCreateProduct(event)">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Product Name *</label>
-                  <input type="text" id="admProdTitle" class="form-control" required placeholder="e.g. 16-Line Pakistani Mushaf">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Category *</label>
-                  <input type="text" id="admProdCat" class="form-control" required placeholder="Quran Copies / Prayer Mats / Accessories">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Base Price (USD $) *</label>
-                  <input type="number" step="0.5" id="admProdPrice" class="form-control" required value="20.0">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Image URL</label>
-                  <input type="url" id="admProdImg" class="form-control" placeholder="https://images.unsplash.com/...">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Short Description</label>
-                <input type="text" id="admProdDesc" class="form-control" placeholder="Product details">
-              </div>
-              <div style="display:flex; gap:0.75rem;">
-                <button type="submit" class="btn btn-gold">Save Product</button>
-                <button type="button" class="btn btn-outline-gold" onclick="document.getElementById('addProductFormBox').style.display='none'">Cancel</button>
-              </div>
-            </form>
+        <!-- ==================== TAB: AUDIT LOGS ==================== -->
+        <div class="admin-tab-pane" id="tabLogs" style="display:none;">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Security &amp; Audit Logs</h1>
+              <p class="page-subtitle">Immutable chronological audit trail of all administrative actions</p>
+            </div>
           </div>
 
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Base USD Price</th>
-                  <th>Rating</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="productsTableBody">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Module</th>
+                    <th>Admin User</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                  <!-- Audit logs -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+
+      </main>
+    </div>
   </div>
 
-  <!-- Google Firebase Cloud SDK -->
+  <!-- =========================================================================
+       3. MODAL DIALOGS
+       ========================================================================= -->
+  <!-- Add Student Modal -->
+  <div class="admin-modal-overlay" id="modalAddStudent">
+    <div class="admin-modal-card">
+      <div class="modal-header-bar">
+        <strong style="font-size:1.1rem; color:var(--admin-primary-dark);">Register New Student</strong>
+        <button class="modal-close-btn" onclick="document.getElementById('modalAddStudent').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); const s = { id: 'STU-' + Math.floor(1000+Math.random()*9000), studentName: this.sName.value, parentName: this.pName.value, course: this.course.value, monthlyFee: this.fee.value, status: 'Active', enrolledAt: new Date().toISOString().split('T')[0] }; window.KII_DB.setDoc(window.KII_DB.COLLECTIONS.STUDENTS, s.id, s); AdminApp.showToast('Student enrolled successfully!'); document.getElementById('modalAddStudent').classList.remove('active');">
+          <div class="admin-form-group">
+            <label class="admin-form-label">Student Full Name</label>
+            <input type="text" name="sName" class="admin-form-control" required placeholder="e.g. Abdullah Khan">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Parent / Guardian Name</label>
+            <input type="text" name="pName" class="admin-form-control" required placeholder="e.g. Muhammad Khan">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Selected Course</label>
+            <select name="course" class="admin-form-control">
+              <option>Noorani Qaida Basics</option>
+              <option selected>Nazra with Tajweed</option>
+              <option>Tahfeez-ul-Quran / Hifz</option>
+              <option>Tafseer &amp; Translation</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Monthly Fee (USD)</label>
+            <input type="number" name="fee" class="admin-form-control" value="50" required>
+          </div>
+          <button type="submit" class="btn-admin btn-admin-gold" style="width:100%; justify-content:center;">
+            Save Student to Cloud Database
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Teacher Modal -->
+  <div class="admin-modal-overlay" id="modalAddTeacher">
+    <div class="admin-modal-card">
+      <div class="modal-header-bar">
+        <strong style="font-size:1.1rem; color:var(--admin-primary-dark);">Add Faculty Member</strong>
+        <button class="modal-close-btn" onclick="document.getElementById('modalAddTeacher').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); const t = { id: 'TCH-' + Math.floor(100+Math.random()*900), name: this.tName.value, gender: this.gender.value, title: this.title.value, qualifications: this.qual.value, status: 'Active' }; window.KII_DB.setDoc(window.KII_DB.COLLECTIONS.TEACHERS, t.id, t); AdminApp.showToast('Teacher added successfully!'); document.getElementById('modalAddTeacher').classList.remove('active');">
+          <div class="admin-form-group">
+            <label class="admin-form-label">Teacher Full Name</label>
+            <input type="text" name="tName" class="admin-form-control" required placeholder="e.g. Qari Muhammad Bilal">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Gender Category</label>
+            <select name="gender" class="admin-form-control">
+              <option value="Male">Male Qari / Scholar</option>
+              <option value="Female">Female Qariah / Aalima</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Title / Designation</label>
+            <input type="text" name="title" class="admin-form-control" value="Certified Qari &amp; Scholar" required>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Qualifications / Ijazah</label>
+            <input type="text" name="qual" class="admin-form-control" value="Sanad Hafiz-e-Quran &amp; Tajweed" required>
+          </div>
+          <button type="submit" class="btn-admin btn-admin-gold" style="width:100%; justify-content:center;">
+            Save Faculty to Cloud Database
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Message Container -->
+  <div class="admin-toast-container" id="adminToastContainer"></div>
+
+  <!-- Google Firebase SDKs (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+  <!-- Firebase Configuration & Unified Database Services -->
   <script src="firebase-config.js"></script>
-  <script src="app.js"></script>
-  <script>
-    // In-memory LMS Enrollments
-    const DEFAULT_ENROLLMENTS = [
-      {
-        id: 'ENR-301',
-        studentName: 'Zayd Khan',
-        course: 'Quran Reading & Nazra with Tajweed',
-        teacher: 'Qari Abdul Rehman Al-Azhari',
-        schedule: 'Mon-Wed-Fri (6:00 PM PKT)',
-        progress: 60,
-        status: 'Active',
-        zoomLink: 'https://zoom.us/j/992182741'
-      },
-      {
-        id: 'ENR-302',
-        studentName: 'Amina Farooq',
-        course: 'Tahfeez-ul-Quran (Full Hifz)',
-        teacher: 'Ustadha Fatima Zahra',
-        schedule: 'Mon-Thu (4:00 PM BST)',
-        progress: 85,
-        status: 'Active',
-        zoomLink: 'https://zoom.us/j/883712642'
-      },
-      {
-        id: 'ENR-303',
-        studentName: 'Dr. Tariq Mehmood',
-        course: 'Quranic Arabic & Tafseer',
-        teacher: 'Mufti Muhammad Zeeshan',
-        schedule: 'Tue-Sat (8:30 PM PKT)',
-        progress: 45,
-        status: 'Active',
-        zoomLink: 'https://zoom.us/j/772918349'
-      }
-    ];
 
-    function getEnrollments() {
-      const saved = localStorage.getItem('khoula_enrollments');
-      return saved ? JSON.parse(saved) : DEFAULT_ENROLLMENTS;
-    }
+  <!-- Production Admin Dashboard Controller -->
+  <script src="admin-controller.js"></script>
 
-    function saveEnrollments(data) {
-      localStorage.setItem('khoula_enrollments', JSON.stringify(data));
-    }
-
-    function handleAdminLogin(e) {
-      e.preventDefault();
-      const val = document.getElementById('adminPassInput').value.trim();
-      if (val === 'khoula2026') {
-        sessionStorage.setItem('khoula_admin_auth', 'true');
-        checkAdminAuth();
-      } else {
-        alert('Invalid Passcode. Please check and retry.');
-      }
-    }
-
-    function checkAdminAuth() {
-      const isAuth = sessionStorage.getItem('khoula_admin_auth') === 'true';
-      if (isAuth) {
-        document.getElementById('adminLockscreen').style.display = 'none';
-        document.getElementById('adminLayout').style.display = 'grid';
-        loadAdminViews();
-      } else {
-        document.getElementById('adminLockscreen').style.display = 'flex';
-        document.getElementById('adminLayout').style.display = 'none';
-      }
-    }
-
-    function logoutAdmin() {
-      sessionStorage.removeItem('khoula_admin_auth');
-      checkAdminAuth();
-    }
-
-    function switchTab(tabId) {
-      const tabs = ['tabOverview', 'tabLmsEnrollments', 'tabLmsProgress', 'tabCourses', 'tabBookings', 'tabOrders', 'tabProducts'];
-      tabs.forEach(t => {
-        const el = document.getElementById(t);
-        if (el) el.style.display = t === tabId ? 'block' : 'none';
-        
-        const navEl = document.getElementById(`nav-${t}`);
-        if (navEl) navEl.className = t === tabId ? 'admin-nav-item active' : 'admin-nav-item';
-      });
-
-      const titles = {
-        tabOverview: 'Academy Overview',
-        tabLmsEnrollments: 'Student Enrollments & Schedules',
-        tabLmsProgress: 'Daily Sabaq & Progress Ledger',
-        tabBookings: 'Student Trial Registrations',
-        tabOrders: 'Islamic Store Orders',
-        tabCourses: 'Course Curriculum & Syllabi',
-        tabProducts: 'Manage Shop Inventory'
-      };
-      document.getElementById('pageTitle').textContent = titles[tabId] || 'Admin Dashboard';
-    }
-
-    function loadAdminViews() {
-      const enrollments = getEnrollments();
-      document.getElementById('totalEnrolledCount').textContent = enrollments.length;
-      document.getElementById('totalBookingsCount').textContent = APP_STATE.trialBookings.length;
-      document.getElementById('totalOrdersCount').textContent = APP_STATE.orders.length;
-      document.getElementById('totalCoursesCount').textContent = APP_STATE.courses.length;
-
-      // Overview Bookings Table (Top 5)
-      const overviewTable = document.getElementById('overviewBookingsTable');
-      overviewTable.innerHTML = APP_STATE.trialBookings.slice(0, 5).map(b => `
-        <tr>
-          <td><strong>${b.id}</strong></td>
-          <td>${b.studentName} <span style="color:#64748b; font-size:0.8rem;">(${b.parentName || 'Self'})</span></td>
-          <td>${b.course}</td>
-          <td>${b.timeSlot}</td>
-          <td><a href="https://wa.me/${b.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:#25d366; font-weight:700;"><i class="fab fa-whatsapp"></i> ${b.phone}</a></td>
-          <td><span class="status-badge ${b.status === 'New Booking' ? 'status-new' : b.status === 'Trial Scheduled' ? 'status-scheduled' : 'status-enrolled'}">${b.status}</span></td>
-          <td>
-            <button class="btn btn-sm btn-outline-gold" onclick="toggleBookingStatus('${b.id}')">Update</button>
-          </td>
-        </tr>
-      `).join('');
-
-      // Enrolled Students Table
-      const enrTable = document.getElementById('enrolledStudentsTable');
-      enrTable.innerHTML = enrollments.map(e => `
-        <tr>
-          <td><strong>${e.studentName}</strong></td>
-          <td>${e.course}</td>
-          <td><span style="color:var(--color-primary); font-weight:600;"><i class="fas fa-chalkboard-teacher"></i> ${e.teacher}</span></td>
-          <td><small style="color:#64748b;">${e.schedule}</small></td>
-          <td>
-            <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.2rem;">${e.progress}%</div>
-            <div class="progress-bar-container" style="width:80px; margin:0;"><div class="progress-bar-fill" style="width:${e.progress}%;"></div></div>
-          </td>
-          <td><span class="status-badge status-enrolled">${e.status}</span></td>
-          <td>
-            <a href="${e.zoomLink}" target="_blank" class="btn btn-sm btn-outline-gold" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
-              <i class="fas fa-video"></i> Room
-            </a>
-          </td>
-        </tr>
-      `).join('');
-
-      // Full Bookings Table
-      const fullTable = document.getElementById('fullBookingsTable');
-      fullTable.innerHTML = APP_STATE.trialBookings.map(b => `
-        <tr>
-          <td><strong>${b.id}</strong></td>
-          <td><strong>${b.studentName}</strong></td>
-          <td>${b.parentName || 'N/A'}</td>
-          <td>${b.course}</td>
-          <td>${b.timezone}<br><small style="color:#64748b;">${b.timeSlot}</small></td>
-          <td>${b.tutorPref}</td>
-          <td><a href="https://wa.me/${b.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:#16a34a; font-weight:700;"><i class="fab fa-whatsapp"></i> ${b.phone}</a></td>
-          <td><span class="status-badge ${b.status === 'New Booking' ? 'status-new' : b.status === 'Trial Scheduled' ? 'status-scheduled' : 'status-enrolled'}">${b.status}</span></td>
-          <td>
-            <button class="btn btn-sm btn-primary" onclick="toggleBookingStatus('${b.id}')">Toggle Status</button>
-          </td>
-        </tr>
-      `).join('');
-
-      // Orders Table
-      const ordTable = document.getElementById('ordersTable');
-      ordTable.innerHTML = APP_STATE.orders.map(o => `
-        <tr>
-          <td><strong>${o.id}</strong></td>
-          <td><strong>${o.customer}</strong></td>
-          <td>${o.phone || 'N/A'}</td>
-          <td>${o.items}</td>
-          <td>${o.payment || 'Cash On Delivery'}</td>
-          <td><strong>${o.total}</strong></td>
-          <td><span class="status-badge status-enrolled">${o.status}</span></td>
-        </tr>
-      `).join('');
-
-      // Courses Table
-      const cTable = document.getElementById('coursesTableBody');
-      cTable.innerHTML = APP_STATE.courses.map(c => `
-        <tr>
-          <td><strong>${c.title}</strong></td>
-          <td>${c.category}</td>
-          <td>${c.level}</td>
-          <td>${c.duration}</td>
-          <td>
-            <button class="btn btn-sm btn-outline-gold" onclick="deleteCourse('${c.id}')"><i class="fas fa-trash"></i></button>
-          </td>
-        </tr>
-      `).join('');
-
-      // Products Table
-      const pTable = document.getElementById('productsTableBody');
-      pTable.innerHTML = APP_STATE.products.map(p => `
-        <tr>
-          <td><strong>${p.title}</strong></td>
-          <td>${p.category}</td>
-          <td>$${p.basePriceUSD}</td>
-          <td>★ ${p.rating}</td>
-          <td>
-            <button class="btn btn-sm btn-outline-gold" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function handleEnrollStudent(e) {
-      e.preventDefault();
-      const enrollments = getEnrollments();
-      const newEnr = {
-        id: 'ENR-' + (enrollments.length + 301),
-        studentName: document.getElementById('enrStudentName').value,
-        course: document.getElementById('enrCourseSelect').value,
-        teacher: document.getElementById('enrTeacherSelect').value,
-        schedule: document.getElementById('enrSchedule').value,
-        progress: 10,
-        status: 'Active',
-        zoomLink: document.getElementById('enrZoomLink').value || 'https://zoom.us/j/992182741'
-      };
-
-      enrollments.unshift(newEnr);
-      saveEnrollments(enrollments);
-      document.getElementById('enrollStudentFormBox').style.display = 'none';
-      loadAdminViews();
-      alert(`Student "${newEnr.studentName}" successfully enrolled with ${newEnr.teacher}!`);
-    }
-
-    function handleSaveSabaqProgress(e) {
-      e.preventDefault();
-      const student = document.getElementById('logStudentSelect').value;
-      const sabaq = document.getElementById('logSabaq').value;
-      const grade = document.getElementById('logGrade').value;
-      const attendance = document.getElementById('logAttendance').value;
-      const remarks = document.getElementById('logRemarks').value || 'Good recitation.';
-
-      const tbody = document.getElementById('progressLogTable');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${new Date().toISOString().split('T')[0]}</td>
-        <td><strong>${student}</strong></td>
-        <td>${sabaq}</td>
-        <td><span class="status-badge status-enrolled">${grade.split('/')[0]}</span></td>
-        <td>${attendance.split('(')[0]}</td>
-        <td>${remarks}</td>
-      `;
-      tbody.prepend(tr);
-
-      // Automatically sync to Google Firebase Cloud
-      if (typeof window.saveSabaqProgressToFirebase === 'function') {
-        window.saveSabaqProgressToFirebase({
-          student,
-          sabaq,
-          grade,
-          attendance,
-          remarks,
-          date: new Date().toISOString().split('T')[0]
-        });
-      }
-
-      e.target.reset();
-      alert(`Daily Sabaq logged for ${student}!`);
-    }
-
-    function filterBookingsTable() {
-      const q = document.getElementById('bookingSearchInput').value.toLowerCase();
-      const rows = document.querySelectorAll('#fullBookingsTable tr');
-      rows.forEach(r => {
-        r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-      });
-    }
-
-    function handleCreateCourse(e) {
-      e.preventDefault();
-      const newCourse = {
-        id: 'c' + (APP_STATE.courses.length + 1),
-        title: document.getElementById('admCourseTitle').value,
-        category: document.getElementById('admCourseCategory').value,
-        level: document.getElementById('admCourseLevel').value || 'All Ages',
-        duration: document.getElementById('admCourseDuration').value || '30-45 Mins / Class',
-        badge: 'Featured',
-        description: document.getElementById('admCourseDesc').value,
-        topics: ['Interactive Live Session', 'Makharij & Tajweed Practice', 'Homework Assessment']
-      };
-      APP_STATE.courses.push(newCourse);
-      localStorage.setItem('khoula_courses', JSON.stringify(APP_STATE.courses));
-      document.getElementById('addCourseFormBox').style.display = 'none';
-      loadAdminViews();
-      alert('Course successfully added!');
-    }
-
-    function deleteCourse(cId) {
-      if (confirm('Are you sure you want to remove this course?')) {
-        APP_STATE.courses = APP_STATE.courses.filter(c => c.id !== cId);
-        localStorage.setItem('khoula_courses', JSON.stringify(APP_STATE.courses));
-        loadAdminViews();
-      }
-    }
-
-    function handleCreateProduct(e) {
-      e.preventDefault();
-      const newProd = {
-        id: 'p' + (APP_STATE.products.length + 1),
-        title: document.getElementById('admProdTitle').value,
-        category: document.getElementById('admProdCat').value,
-        basePriceUSD: parseFloat(document.getElementById('admProdPrice').value),
-        rating: 5.0,
-        image: document.getElementById('admProdImg').value || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=500&q=80',
-        description: document.getElementById('admProdDesc').value || 'Sacred Islamic study material.'
-      };
-      APP_STATE.products.push(newProd);
-      localStorage.setItem('khoula_products', JSON.stringify(APP_STATE.products));
-      document.getElementById('addProductFormBox').style.display = 'none';
-      loadAdminViews();
-      alert('Product added to Islamic Store!');
-    }
-
-    function deleteProduct(pId) {
-      if (confirm('Delete this product from shop?')) {
-        APP_STATE.products = APP_STATE.products.filter(p => p.id !== pId);
-        localStorage.setItem('khoula_products', JSON.stringify(APP_STATE.products));
-        loadAdminViews();
-      }
-    }
-
-    // Initialize Auth check on load
-    document.addEventListener('DOMContentLoaded', () => {
-      checkAdminAuth();
-    });
-  </script>
 </body>
 </html>
