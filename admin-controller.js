@@ -63,15 +63,16 @@ const AdminApp = {
     const roleSelect = document.getElementById('adminRoleSelect');
     const passcode = passInput ? passInput.value.trim() : '';
 
-    if (passcode === 'khoula2026' || passcode === 'admin123') {
+    if (passcode === 'teacher2026' || passcode === 'khoula2026' || passcode === 'student123') {
       localStorage.setItem('khoula_admin_logged_in', 'true');
-      localStorage.setItem('khoula_admin_email', 'admin@khoula.org');
-      localStorage.setItem('khoula_admin_role', roleSelect ? roleSelect.value : 'Super Admin');
-      this.showToast('Authentication successful! Welcome to Admin Command Center.');
+      const selectedRole = roleSelect ? roleSelect.value : 'Teacher / Faculty';
+      localStorage.setItem('khoula_admin_email', selectedRole === 'Student Portal' ? 'student@khoula.org' : 'faculty@khoula.org');
+      localStorage.setItem('khoula_admin_role', selectedRole);
+      this.showToast('Login successful! Welcome to Academy Portal.');
       this.checkAuth();
       this.switchTab('tabOverview');
     } else {
-      this.showToast('Invalid security passcode. Access Denied.', 'error');
+      this.showToast('Invalid portal passcode. Access Denied.', 'error');
     }
   },
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin &amp; Academy Management System | Khoula Islamic Institute</title>
+  <title>Faculty &amp; Student Academy Portal | Khoula Islamic Institute</title>
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="logo.png">
@@ -28,27 +28,27 @@
       <div style="margin-bottom:1.25rem;">
         <img src="logo.png" alt="Khoula Islamic Institute" onerror="this.src='logo.jpg'" style="height:90px; width:auto; object-fit:contain;">
       </div>
-      <h2 style="color:var(--admin-primary-dark); font-size:1.55rem; font-weight:800; margin-bottom:0.3rem;">Khoula Institute Admin</h2>
-      <p style="color:var(--admin-text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Production Command Portal • Enter Authorized Credentials</p>
+      <h2 style="color:var(--admin-primary-dark); font-size:1.55rem; font-weight:800; margin-bottom:0.3rem;">Academy Portal Login</h2>
+      <p style="color:var(--admin-text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Teacher, Student &amp; Staff Access Portal</p>
       
       <form id="lockscreenForm" onsubmit="AdminApp.login(event)">
         <div style="text-align:left; margin-bottom:1rem;">
-          <label style="font-size:0.8rem; font-weight:600; color:var(--admin-text-main); display:block; margin-bottom:0.4rem;">Select Role</label>
+          <label style="font-size:0.8rem; font-weight:600; color:var(--admin-text-main); display:block; margin-bottom:0.4rem;">Select Portal Access</label>
           <select id="adminRoleSelect" class="admin-form-control">
-            <option value="Super Admin">Super Admin (Full Access)</option>
+            <option value="Teacher / Faculty">Teacher / Faculty</option>
+            <option value="Student Portal">Student Portal</option>
             <option value="Admission Manager">Admission Manager</option>
-            <option value="Academic Manager">Academic Manager</option>
-            <option value="Accountant">Accountant / Finance</option>
+            <option value="Academic Staff">Academic Staff</option>
           </select>
         </div>
 
         <div style="text-align:left; margin-bottom:1.5rem;">
-          <label style="font-size:0.8rem; font-weight:600; color:var(--admin-text-main); display:block; margin-bottom:0.4rem;">Master Security Passcode</label>
-          <input type="password" id="adminPassInput" class="admin-form-control" required placeholder="Default: khoula2026" style="text-align:center; font-size:1.15rem; letter-spacing:2px;">
+          <label style="font-size:0.8rem; font-weight:600; color:var(--admin-text-main); display:block; margin-bottom:0.4rem;">Portal Passcode</label>
+          <input type="password" id="adminPassInput" class="admin-form-control" required placeholder="Enter your portal passcode" style="text-align:center; font-size:1.15rem; letter-spacing:2px;">
         </div>
 
         <button type="submit" class="btn-admin btn-admin-gold" style="width:100%; justify-content:center; padding:0.8rem; font-size:0.95rem;">
-          <i class="fas fa-lock-open"></i> Unlock Dashboard
+          <i class="fas fa-sign-in-alt"></i> Login to Academy Portal
         </button>
       </form>
 
